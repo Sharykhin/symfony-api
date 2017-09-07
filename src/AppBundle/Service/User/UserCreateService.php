@@ -4,6 +4,7 @@ namespace AppBundle\Service\User;
 
 use AppBundle\Contract\Entity\IUser;
 use AppBundle\Contract\Service\User\IUserCreate;
+use AppBundle\Factory\Entity\UserStaticFactory;
 use Doctrine\ORM\EntityManagerInterface;
 
 /**
@@ -16,21 +17,16 @@ class UserCreateService implements IUserCreate
     /** @var EntityManagerInterface $em */
     protected $em;
 
-    /** @var IUser $user */
-    protected $user;
 
     /**
      * UserCreateService constructor.
      * @param EntityManagerInterface $em
-     * @param IUser $user
      */
     public function __construct(
-        EntityManagerInterface $em,
-        IUser $user
+        EntityManagerInterface $em
     )
     {
         $this->em = $em;
-        $this->user = $user;
     }
 
     /**
@@ -39,9 +35,10 @@ class UserCreateService implements IUserCreate
      */
     public function execute(array $parameters): IUser
     {
-        $this->user->setUsername($parameters['username']);
-        $this->em->persist($this->user);
-        $this->em->flush($this->user);
-        return $this->user;
+        $user = UserStaticFactory::createUser();
+        $user->setUsername($parameters['username']);
+        $this->em->persist($user);
+        $this->em->flush($user);
+        return $user;
     }
 }

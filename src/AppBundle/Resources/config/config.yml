@@ -3,6 +3,3 @@ services:
       class: AppBundle\EventListener\AppRequestListener
       tags:
           - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest, priority: 7 }
-
-    AppBunle\Contract\Entity\IUser:
-        factory: ['AppBundle\Factory\Entity\UserStaticFactory', createUser]

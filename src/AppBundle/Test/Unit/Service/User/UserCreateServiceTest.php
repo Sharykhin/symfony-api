@@ -21,7 +21,7 @@ class UserCreateServiceTest extends TestCase
         $mockEm = $this->createMock(\Doctrine\ORM\EntityManagerInterface::class);
         $mockEm->expects($this->once())->method('persist')->with($mockUser);
         $mockEm->expects($this->once())->method('flush')->with();
-        $userService = new UserCreateService($mockEm, $mockUser);
+        $userService = new UserCreateService($mockEm);
         $user = $userService->execute(['username' => 'Mike'], false);
 
         $this->assertTrue($user instanceof IUser);
