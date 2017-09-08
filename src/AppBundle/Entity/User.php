@@ -76,4 +76,12 @@ class User implements IUser
     {
         return $this->firstName;
     }
+
+    /**
+     * @return string
+     */
+    public function getFullName() : string
+    {
+        return "{$this->firstName} [$this->username]";
+    }
 }

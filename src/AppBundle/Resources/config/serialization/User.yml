@@ -5,4 +5,6 @@ AppBundle\Entity\User:
         username:
             groups: ['list']
         firstName:
-            groups: ['person']
+            groups: ['list', 'person']
+        fullName:
+            groups: ['list']
