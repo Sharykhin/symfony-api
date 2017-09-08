@@ -4,7 +4,6 @@ namespace AppBundle\Controller;
 
 use AppBundle\Contract\Service\User\IUserCreate;
 use AppBundle\Entity\User;
-use AppBundle\ResponseTrait;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -15,9 +14,8 @@ use Symfony\Component\HttpFoundation\Request;
  * Class UserController
  * @package AppBundle\Controller
  */
-class UserController extends Controller
+class UserController extends AbstractController
 {
-    use ResponseTrait;
 
     /**
      * @param Request $request
@@ -47,7 +45,6 @@ class UserController extends Controller
         $repository = $this->getDoctrine()->getRepository(User::class);
         $users = $repository->findAll();
         $repository->findBy(['username' => 'Mike']);
-        return $this->success($users, ['groups' => ['list']]);
-        return $this->json(['success' => true, 'data' => $users], JsonResponse::HTTP_OK, [], ['groups' => ['list']]);
+        return $this->success($users, JsonResponse::HTTP_OK, [], ['groups' => ['list']]);
     }
 }

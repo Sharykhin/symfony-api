@@ -1,34 +1,41 @@
 <?php
 
-namespace AppBundle;
+namespace AppBundle\Controller;
 
 use AppBundle\Normalizer\NullableObjectNormalizer;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\NameConverter\CamelCaseToSnakeCaseNameConverter;
 use Symfony\Component\Serializer\Serializer;
 
 /**
- * Class ResponseTrait
- * @package AppBundle
+ * Class AbstractController
+ * @package AppBundle\Controller
  */
-trait ResponseTrait
+abstract class AbstractController extends Controller
 {
     /**
      * @param array|null $data
-     * @param array $context
      * @param int $status
      * @param array $headers
+     * @param array $context
      * @return JsonResponse
      */
     public function success(
         array $data = null,
-        array $context = [],
         $status = JsonResponse::HTTP_OK,
-        array $headers = []
+        array $headers = [],
+        array $context = []
     ) : JsonResponse
     {
         $encoders = [new JsonEncoder()];
-        $normalizers = [new NullableObjectNormalizer()];
+        $converter = null;
+        if ($this->getParameter('camel_case_to_underscore_response') === true) {
+            $converter = new CamelCaseToSnakeCaseNameConverter();
+        }
+
+        $normalizers = [new NullableObjectNormalizer(null, $converter)];
         $serializer = new Serializer($normalizers, $encoders);
         $json = $serializer->serialize(['success' => true, 'data' => $data], 'json', [
             'json_encode_options' => JsonResponse::DEFAULT_ENCODING_OPTIONS,
