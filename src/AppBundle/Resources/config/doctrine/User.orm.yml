@@ -22,3 +22,7 @@ AppBundle\Entity\User:
         password:
             type: string
             length: 60
+
+        role:
+            type: string
+            length: 40

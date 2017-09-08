@@ -10,6 +10,7 @@ use AppBundle\Form\UserType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\FormErrorIterator;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 /**
  * Class UserCreateService
@@ -27,6 +28,9 @@ class UserCreateService implements IUserCreate
     /** @var FormFactoryInterface $formFactory */
     protected $formFactory;
 
+    /** @var UserPasswordEncoderInterface $passwordEncoder */
+    protected $passwordEncoder;
+
     /**
      * UserCreateService constructor.
      * @param EntityManagerInterface $em
@@ -36,12 +40,14 @@ class UserCreateService implements IUserCreate
     public function __construct(
         EntityManagerInterface $em,
         IUserFactory $userFactory,
-        FormFactoryInterface $formFactory
+        FormFactoryInterface $formFactory,
+        UserPasswordEncoderInterface $passwordEncoder
     )
     {
         $this->em = $em;
         $this->userFactory = $userFactory;
         $this->formFactory = $formFactory;
+        $this->passwordEncoder = $passwordEncoder;
     }
 
     /**
@@ -60,6 +66,10 @@ class UserCreateService implements IUserCreate
         if ($errors->count() > 0) {
             throw new FormValidateException($errors);
         }
+        $password = $this->passwordEncoder->encodePassword($user, $parameters['password']);
+        $user->setPassword($password);
+        $user->setRole('ROLE_USER');
+
         $this->em->persist($user);
         $this->em->flush($user);
         return $user;

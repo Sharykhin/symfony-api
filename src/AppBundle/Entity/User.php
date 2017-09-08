@@ -3,12 +3,13 @@
 namespace AppBundle\Entity;
 
 use AppBundle\Contract\Entity\IUser;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Class User
  * @package AppBundle\Entity
  */
-class User implements IUser
+class User implements IUser, UserInterface
 {
     /** @var  $id */
     private $id;
@@ -24,6 +25,9 @@ class User implements IUser
 
     /** @var  string $password */
     private $password;
+
+    /** @var  $roles */
+    private $role;
 
     /**
      * Get id
@@ -137,5 +141,52 @@ class User implements IUser
     public function getPassword()
     {
         return $this->password;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getRoles()
+    {
+        return [$this->role];
+    }
+
+    public function getSalt()
+    {
+        return null;
+    }
+
+    public function getUsername()
+    {
+        return $this->login;
+    }
+
+    public function eraseCredentials()
+    {
+
+    }
+
+    /**
+     * Set role
+     *
+     * @param string $role
+     *
+     * @return User
+     */
+    public function setRole($role)
+    {
+        $this->role = $role;
+
+        return $this;
+    }
+
+    /**
+     * Get role
+     *
+     * @return string
+     */
+    public function getRole()
+    {
+        return $this->role;
     }
 }

@@ -14,3 +14,6 @@ AppBundle\Entity\User:
 
         fullName:
             groups: ['list']
+
+        role:
+            groups: ['list']

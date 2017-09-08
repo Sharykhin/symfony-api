@@ -7,9 +7,7 @@ use AppBundle\Contract\Service\User\IUserCreate;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * Class UserController
@@ -33,7 +31,7 @@ class UserController extends AbstractController
     {
         $parameters = $request->request->all();
         $user = $userCreate->execute($parameters);
-        return $this->json(['success' => true, 'data' => $user]);
+        return $this->success(['success' => true, 'data' => $user], JsonResponse::HTTP_CREATED, [], ['groups' => ['list']]);
     }
 
     /**
@@ -54,5 +52,19 @@ class UserController extends AbstractController
         $total = $userRepository->count([]);
         $count = sizeof($users);
         return $this->success($users, JsonResponse::HTTP_OK, [], ['groups' => ['list']], compact('total', 'count', 'limit', 'offset'));
+    }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     *
+     * @Route("/api/login", name="post_login")
+     * @Method("POST")
+     */
+    public function login(
+        Request $request
+    ) : JsonResponse
+    {
+        return $this->success([]);
     }
 }
