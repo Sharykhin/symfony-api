@@ -54,7 +54,9 @@ class UserCreateService implements IUserCreate
         /** @var User $user */
         $user = $this->userFactory->createUser();
         /** @var FormErrorIterator $errors */
-        $errors = $this->formFactory->create(UserType::class, $user)->submit($parameters)->getErrors(true);
+        $errors = $this->formFactory->create(UserType::class, $user, ['validation_groups' => ['registration']])
+            ->submit($parameters)
+            ->getErrors(true);
         if ($errors->count() > 0) {
             throw new FormValidateException($errors);
         }

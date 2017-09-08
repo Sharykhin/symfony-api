@@ -1,6 +1,6 @@
 AppBundle\Entity\User:
     properties:
         username:
-            - NotBlank: ~
+            - NotBlank: { groups: [registration, update] }
         firstName:
-            - NotBlank: ~
+            - NotBlank: { groups: [registration]}
