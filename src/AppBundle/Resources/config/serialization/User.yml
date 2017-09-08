@@ -2,9 +2,15 @@ AppBundle\Entity\User:
     attributes:
         id:
             groups: ['list']
+
+        login:
+            groups: ['list']
+
         firstName:
             groups: ['list']
+
         lastName:
             groups: ['list']
+
         fullName:
             groups: ['list']

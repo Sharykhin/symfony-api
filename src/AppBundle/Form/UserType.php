@@ -27,6 +27,12 @@ class UserType extends AbstractType
             ->add('last_name', TextType::class, [
                 'property_path' => 'lastName'
             ])
+            ->add('login', TextType::class, [
+                'property_path' => 'login'
+            ])
+            ->add('password', TextType::class, [
+                'property_path' => 'password'
+            ])
         ;
     }
 

@@ -12,4 +12,13 @@ AppBundle\Entity\User:
 
         lastName:
             type: string
+            length: 80,
+            nullable: true
+
+        login:
+            type: string
             length: 80
+
+        password:
+            type: string
+            length: 60

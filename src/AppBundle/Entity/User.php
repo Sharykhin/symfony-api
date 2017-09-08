@@ -19,6 +19,12 @@ class User implements IUser
     /** @var  string $lastName */
     private $lastName;
 
+    /** @var  string $login */
+    private $login;
+
+    /** @var  string $password */
+    private $password;
+
     /**
      * Get id
      *
@@ -83,5 +89,53 @@ class User implements IUser
     public function getFullName() : string
     {
         return "{$this->firstName} {$this->lastName}";
+    }
+
+    /**
+     * Set login
+     *
+     * @param string $login
+     *
+     * @return User
+     */
+    public function setLogin(string $login)
+    {
+        $this->login = $login;
+
+        return $this;
+    }
+
+    /**
+     * Get login
+     *
+     * @return string
+     */
+    public function getLogin()
+    {
+        return $this->login;
+    }
+
+    /**
+     * Set password
+     *
+     * @param string $password
+     *
+     * @return User
+     */
+    public function setPassword(string $password)
+    {
+        $this->password = $password;
+
+        return $this;
+    }
+
+    /**
+     * Get password
+     *
+     * @return string
+     */
+    public function getPassword()
+    {
+        return $this->password;
     }
 }
