@@ -1,10 +1,10 @@
 AppBundle\Entity\User:
     attributes:
         id:
-            groups: ['person', 'list']
-        username:
             groups: ['list']
         firstName:
-            groups: ['list', 'person']
+            groups: ['list']
+        lastName:
+            groups: ['list']
         fullName:
             groups: ['list']

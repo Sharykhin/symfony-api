@@ -22,7 +22,7 @@ class UserController extends AbstractController
      * @param IUserCreate $userCreate
      * @return JsonResponse
      *
-     * @Route("/users", name="post_users")
+     * @Route("/api/users", name="post_users")
      * @Method("POST")
      */
     public function create(
@@ -39,7 +39,7 @@ class UserController extends AbstractController
      * @param Request $request
      * @param IUserRepository $userRepository
      * @return JsonResponse
-     * @Route("/users", name="get_users")
+     * @Route("/api/users", name="get_users")
      * @Method("GET")
      */
     public function index(

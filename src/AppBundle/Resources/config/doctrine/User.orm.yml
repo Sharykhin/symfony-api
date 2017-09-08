@@ -6,10 +6,10 @@ AppBundle\Entity\User:
             type: integer
             generator: { strategy: AUTO }
     fields:
-        username:
+        firstName:
             type: string
             length: 80
 
-        firstName:
+        lastName:
             type: string
             length: 80

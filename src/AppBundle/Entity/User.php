@@ -13,11 +13,11 @@ class User implements IUser
     /** @var  $id */
     private $id;
 
-    /** @var string|null $username  */
-    private $username;
-
     /** @var  string|null $firstName */
     private $firstName;
+
+    /** @var  string $lastName */
+    private $lastName;
 
     /**
      * Get id
@@ -27,30 +27,6 @@ class User implements IUser
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set username
-     *
-     * @param string $username
-     *
-     * @return User
-     */
-    public function setUsername(string $username)
-    {
-        $this->username = $username;
-
-        return $this;
-    }
-
-    /**
-     * Get username
-     *
-     * @return string
-     */
-    public function getUsername() : ?string
-    {
-        return $this->username;
     }
 
     /**
@@ -78,10 +54,34 @@ class User implements IUser
     }
 
     /**
+     * Set lastName
+     *
+     * @param string $lastName
+     *
+     * @return User
+     */
+    public function setLastName(string $lastName)
+    {
+        $this->lastName = $lastName;
+
+        return $this;
+    }
+
+    /**
+     * Get lastName
+     *
+     * @return string
+     */
+    public function getLastName() : ?string
+    {
+        return $this->lastName;
+    }
+
+    /**
      * @return string
      */
     public function getFullName() : string
     {
-        return "{$this->firstName} [$this->username]";
+        return "{$this->firstName} {$this->lastName}";
     }
 }
