@@ -16,18 +16,20 @@ abstract class AbstractController extends Controller
      * @param int $status
      * @param array $headers
      * @param array $context
+     * @param array $meta
      * @return JsonResponse
      */
     public function success(
         array $data = null,
         $status = JsonResponse::HTTP_OK,
         array $headers = [],
-        array $context = []
+        array $context = [],
+        array $meta = null
     ) : JsonResponse
     {
 
         $serializer = $this->get('custom_serializer');
-        $json = $serializer->serialize(['success' => true, 'data' => $data, 'errors' => null, 'meta' => null], 'json', $context);
+        $json = $serializer->serialize(['success' => true, 'data' => $data, 'errors' => null, 'meta' => $meta], 'json', $context);
         return new JsonResponse($json, $status, $headers, true);
     }
 

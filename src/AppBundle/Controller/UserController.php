@@ -2,14 +2,13 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Contract\Repository\User\IUserRepository;
 use AppBundle\Contract\Service\User\IUserCreate;
-use AppBundle\Entity\User;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class UserController
@@ -37,15 +36,23 @@ class UserController extends AbstractController
     }
 
     /**
+     * @param Request $request
+     * @param IUserRepository $userRepository
      * @return JsonResponse
      * @Route("/users", name="get_users")
      * @Method("GET")
      */
-    public function index() : JsonResponse
+    public function index(
+        Request $request,
+        IUserRepository $userRepository
+    ) : JsonResponse
     {
-        $repository = $this->getDoctrine()->getRepository(User::class);
-        $users = $repository->findAll();
-        $repository->findBy(['username' => 'Mike']);
-        return $this->success($users, JsonResponse::HTTP_OK, [], ['groups' => ['list']]);
+        $limit = (int) $request->get('limit', 5);
+        $offset = (int) $request->get('offset', 0);
+        $users = $userRepository->findAll([], $limit, $offset);
+        $total = $userRepository->count([]);
+        $count = sizeof($users);
+
+        return $this->success($users, JsonResponse::HTTP_OK, [], ['groups' => ['list']], compact('total', 'count', 'limit', 'offset'));
     }
 }
