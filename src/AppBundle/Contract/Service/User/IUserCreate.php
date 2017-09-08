@@ -2,7 +2,7 @@
 
 namespace AppBundle\Contract\Service\User;
 
-use AppBundle\Contract\Entity\IUser;
+use AppBundle\Entity\User;
 
 /**
  * Interface IUserCreate
@@ -12,7 +12,7 @@ interface IUserCreate
 {
     /**
      * @param array $parameters
-     * @return IUser
+     * @return User
      */
-    public function execute(array $parameters) : IUser;
+    public function execute(array $parameters) : User;
 }

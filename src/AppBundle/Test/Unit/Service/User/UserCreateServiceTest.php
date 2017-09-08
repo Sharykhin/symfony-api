@@ -6,6 +6,7 @@ use AppBundle\Contract\Entity\IUser;
 use AppBundle\Entity\User;
 use AppBundle\Service\User\UserCreateService;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Class UserCreateServiceTest
@@ -23,7 +24,10 @@ class UserCreateServiceTest extends TestCase
         $mockEm->expects($this->once())->method('persist')->with($mockUser);
         $mockEm->expects($this->once())->method('flush')->with();
 
-        $userService = new UserCreateService($mockEm);
+        $mockValidator = $this->createMock(ValidatorInterface::class);
+        $mockValidator->expects($this->once())->method('validate')->with($mockUser)->willReturn([]);
+
+        $userService = new UserCreateService($mockEm, $mockValidator);
         $user = $userService->execute(['username' => 'Mike', 'first_name'=>'Bob'], false);
 
         $this->assertTrue($user instanceof IUser);
