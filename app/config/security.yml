@@ -12,7 +12,7 @@ security:
         database_users:
             entity:
                 class: AppBundle:User
-                property: login
+                property: username
 
     firewalls:
         # disables authentication for assets and the profiler, adapt it according to your needs
@@ -21,7 +21,12 @@ security:
             security: false
 
         main:
+            pattern: ^/api
             anonymous: ~
+            provider: database_users
+            stateless: true
+            json_login:
+                check_path: /api/login
             # activate different ways to authenticate
 
             # https://symfony.com/doc/current/security.html#a-configuring-how-your-users-will-authenticate
