@@ -4,7 +4,6 @@ namespace AppBundle\Controller;
 
 use AppBundle\Contract\Service\User\IUserCreate;
 use AppBundle\Entity\User;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -31,9 +30,9 @@ class UserController extends Controller
         IUserCreate $userCreate
     ) : JsonResponse
     {
-        $username = $request->request->get('username');
-        $user = $userCreate->execute(['username' => $username]);
-        return $this->json(['success' => true, 'data' => $user->getUserName()]);
+        $parameters = $request->request->all();
+        $user = $userCreate->execute($parameters);
+        return $this->json(['success' => true, 'data' => $user]);
     }
 
     /**

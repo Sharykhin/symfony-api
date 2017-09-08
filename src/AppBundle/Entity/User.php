@@ -3,7 +3,6 @@
 namespace AppBundle\Entity;
 
 use AppBundle\Contract\Entity\IUser;
-use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * Class User
@@ -14,11 +13,11 @@ class User implements IUser
     /** @var  $id */
     private $id;
 
-    /**
-     * @var string|null $username
-     * Groups({"list"})
-     */
+    /** @var string|null $username  */
     private $username;
+
+    /** @var  string|null $firstName */
+    private $firstName;
 
     /**
      * Get id
@@ -52,5 +51,29 @@ class User implements IUser
     public function getUsername() : ?string
     {
         return $this->username;
+    }
+
+    /**
+     * Set firstName
+     *
+     * @param string $firstName
+     *
+     * @return User
+     */
+    public function setFirstName($firstName)
+    {
+        $this->firstName = $firstName;
+
+        return $this;
+    }
+
+    /**
+     * Get firstName
+     *
+     * @return string
+     */
+    public function getFirstName()
+    {
+        return $this->firstName;
     }
 }

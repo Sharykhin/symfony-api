@@ -9,3 +9,7 @@ AppBundle\Entity\User:
         username:
             type: string
             length: 80
+
+        firstName:
+            type: string
+            length: 80
