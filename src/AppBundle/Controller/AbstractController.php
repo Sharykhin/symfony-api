@@ -2,12 +2,8 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Normalizer\NullableObjectNormalizer;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\Serializer\Encoder\JsonEncoder;
-use Symfony\Component\Serializer\NameConverter\CamelCaseToSnakeCaseNameConverter;
-use Symfony\Component\Serializer\Serializer;
 
 /**
  * Class AbstractController
@@ -29,17 +25,28 @@ abstract class AbstractController extends Controller
         array $context = []
     ) : JsonResponse
     {
-        $encoders = [new JsonEncoder()];
-        $converter = null;
-        if ($this->getParameter('camel_case_to_underscore_response') === true) {
-            $converter = new CamelCaseToSnakeCaseNameConverter();
-        }
 
-        $normalizers = [new NullableObjectNormalizer(null, $converter)];
-        $serializer = new Serializer($normalizers, $encoders);
-        $json = $serializer->serialize(['success' => true, 'data' => $data], 'json', [
-            'json_encode_options' => JsonResponse::DEFAULT_ENCODING_OPTIONS,
-        ], $context);
+        $serializer = $this->get('custom_serializer');
+        $json = $serializer->serialize(['success' => true, 'data' => $data, 'errors' => null, 'meta' => null], 'json', $context);
+        return new JsonResponse($json, $status, $headers, true);
+    }
+
+    /**
+     * @param $errors
+     * @param int $status
+     * @param array $headers
+     * @param array $context
+     * @return JsonResponse
+     */
+    public function badRequest(
+        $errors,
+        $status = JsonResponse::HTTP_BAD_REQUEST,
+        array $headers,
+        array $context = []
+    ) : JsonResponse
+    {
+        $serializer = $this->get('custom_serializer');
+        $json = $serializer->serialize(['success' => false, 'data' => null, 'errors' => $errors, 'meta' => null], 'json', $context);
         return new JsonResponse($json, $status, $headers, true);
     }
 }

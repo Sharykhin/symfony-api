@@ -2,6 +2,10 @@ services:
     Doctrine\DBAL\Logging\DebugStack:
         class: Doctrine\DBAL\Logging\DebugStack
 
+    custom_serializer:
+        class: AppBundle\Service\CustomSerializer
+        arguments: ['@service_container']
+
     kernel.listener.app_request_listener:
         class: AppBundle\EventListener\AppRequestListener
         arguments: ['@service_container', '@Doctrine\DBAL\Logging\DebugStack']
