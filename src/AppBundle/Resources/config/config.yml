@@ -1,5 +1,17 @@
 services:
+    Doctrine\DBAL\Logging\DebugStack:
+        class: Doctrine\DBAL\Logging\DebugStack
+
     kernel.listener.app_request_listener:
-      class: AppBundle\EventListener\AppRequestListener
-      tags:
-          - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest, priority: 7 }
+        class: AppBundle\EventListener\AppRequestListener
+        arguments: ['@service_container', '@Doctrine\DBAL\Logging\DebugStack']
+        tags:
+            - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest, priority: 7 }
+
+    kernel.listener.app_response_listener:
+        class: AppBundle\EventListener\AppResponseListener
+        arguments: ['@Doctrine\DBAL\Logging\DebugStack']
+        tags:
+            - { name: kernel.event_listener, event: kernel.response, method: onKernelResponse }
+
+

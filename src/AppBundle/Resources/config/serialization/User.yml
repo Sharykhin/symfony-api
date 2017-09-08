@@ -1,0 +1,6 @@
+AppBundle\Entity\User:
+    attributes:
+        id:
+            groups: ['person', 'list']
+        username:
+            groups: ['list']

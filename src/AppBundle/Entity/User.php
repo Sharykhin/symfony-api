@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use AppBundle\Contract\Entity\IUser;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * Class User
@@ -13,7 +14,10 @@ class User implements IUser
     /** @var  $id */
     private $id;
 
-    /** @var string|null $username */
+    /**
+     * @var string|null $username
+     * Groups({"list"})
+     */
     private $username;
 
     /**
