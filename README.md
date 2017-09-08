@@ -6,6 +6,9 @@ php 7.1
 mysql 5.7  
 
 
+[FrameworkBundle Configuraton ("framework")](https://symfony.com/doc/current/reference/configuration/framework.html)
+
+
 Install:
 --------
 
