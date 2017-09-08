@@ -60,7 +60,7 @@ class User implements IUser
      *
      * @return User
      */
-    public function setFirstName($firstName)
+    public function setFirstName(string $firstName = null)
     {
         $this->firstName = $firstName;
 
@@ -72,7 +72,7 @@ class User implements IUser
      *
      * @return string
      */
-    public function getFirstName()
+    public function getFirstName() : ?string
     {
         return $this->firstName;
     }

@@ -17,12 +17,14 @@ class UserCreateServiceTest extends TestCase
     {
         $mockUser = $this->createMock(User::class);
         $mockUser->expects($this->once())->method('setUsername')->with('Mike')->willReturnSelf();
+        $mockUser->expects($this->once())->method('setFirstName')->with('Bob')->willReturnSelf();
 
         $mockEm = $this->createMock(\Doctrine\ORM\EntityManagerInterface::class);
         $mockEm->expects($this->once())->method('persist')->with($mockUser);
         $mockEm->expects($this->once())->method('flush')->with();
+
         $userService = new UserCreateService($mockEm);
-        $user = $userService->execute(['username' => 'Mike'], false);
+        $user = $userService->execute(['username' => 'Mike', 'first_name'=>'Bob'], false);
 
         $this->assertTrue($user instanceof IUser);
     }
