@@ -23,6 +23,7 @@ class ValidateException extends Exception
     public function __construct(ConstraintViolationList $errors, $code = 400)
     {
         $this->errors = $errors;
+        parent::__construct("", $code, null);
     }
 
     /**

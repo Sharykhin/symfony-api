@@ -5,6 +5,7 @@ namespace AppBundle\Service\User;
 use AppBundle\Contract\Service\User\IUserCreate;
 use AppBundle\Entity\User;
 use AppBundle\Exception\ValidateException;
+use AppBundle\Factory\Entity\UserFactory;
 use AppBundle\Factory\Entity\UserStaticFactory;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Validator\ConstraintViolationList;
@@ -23,6 +24,9 @@ class UserCreateService implements IUserCreate
     /** @var ValidatorInterface $validator */
     protected $validator;
 
+    /** @var UserFactory $userFactory */
+    protected $userFactory;
+
     /**
      * UserCreateService constructor.
      * @param EntityManagerInterface $em
@@ -30,11 +34,13 @@ class UserCreateService implements IUserCreate
      */
     public function __construct(
         EntityManagerInterface $em,
-        ValidatorInterface $validator
+        ValidatorInterface $validator,
+        UserFactory $userFactory
     )
     {
         $this->em = $em;
         $this->validator = $validator;
+        $this->userFactory = $userFactory;
     }
 
     /**
@@ -45,7 +51,7 @@ class UserCreateService implements IUserCreate
     public function execute(array $parameters): User
     {
         /** @var User $user */
-        $user = UserStaticFactory::createUser();
+        $user = $this->userFactory->createUser();
         $user->setUsername($parameters['username']);
         $user->setFirstName($parameters['first_name'] ?? null);
 
