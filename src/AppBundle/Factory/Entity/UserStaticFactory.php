@@ -2,7 +2,6 @@
 
 namespace AppBundle\Factory\Entity;
 
-use AppBundle\Contract\Entity\IUser;
 use AppBundle\Entity\User;
 
 /**
@@ -12,9 +11,9 @@ use AppBundle\Entity\User;
 class UserStaticFactory
 {
     /**
-     * @return IUser
+     * @return User
      */
-    public static function createUser() : IUser
+    public static function createUser() : User
     {
         return new User();
     }
