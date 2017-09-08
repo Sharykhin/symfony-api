@@ -7,16 +7,16 @@ use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
 
 /**
- * Class ValidateException
+ * Class ConstraintValidateException
  * @package AppBundle\Exception
  */
-class ValidateException extends Exception
+class ConstraintValidateException extends Exception
 {
     /** @var ConstraintViolationList $errors */
     protected $errors;
 
     /**
-     * ValidateException constructor.
+     * ConstraintValidateException constructor.
      * @param ConstraintViolationList $errors
      * @param int $code
      */

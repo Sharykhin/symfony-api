@@ -2,7 +2,8 @@
 
 namespace AppBundle\EventListener;
 
-use AppBundle\Exception\ValidateException;
+use AppBundle\Exception\ConstraintValidateException;
+use AppBundle\Exception\FormValidateException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
@@ -40,7 +41,7 @@ class AppExceptionListener
     {
         $exception = $event->getException();
 
-        if ($exception instanceof ValidateException) {
+        if ($exception instanceof ConstraintValidateException || $exception instanceof FormValidateException) {
             $errors = $exception->getErrors();
 
             if($this->container->getParameter('output_camel_case_to_underscore') === true) {
@@ -54,11 +55,10 @@ class AppExceptionListener
             $data = [
                 'success' => false,
                 'data' => null,
-                'errors' => $errors
+                'errors' => $errors,
+                'meta' => null
             ];
-            $json = $this->serializer->serialize($data, 'json', array_merge(array(
-                'json_encode_options' => JsonResponse::DEFAULT_ENCODING_OPTIONS,
-            )), []);
+            $json = $this->serializer->serialize($data, 'json');
 
             $response = new JsonResponse($json, JsonResponse::HTTP_BAD_REQUEST, [], true);
             $event->setResponse($response);
