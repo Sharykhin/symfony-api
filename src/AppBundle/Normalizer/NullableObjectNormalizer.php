@@ -1,12 +1,16 @@
 <?php
 
-namespace AppBundle;
+namespace AppBundle\Normalizer;
 
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\Encoder\XmlEncoder;
 
-class CustomObjectNormalizer extends ObjectNormalizer
+/**
+ * Class NullableObjectNormalizer
+ * @package AppBundle\Controller
+ */
+class NullableObjectNormalizer extends ObjectNormalizer
 {
     /**
      * {@inheritdoc}
@@ -14,7 +18,7 @@ class CustomObjectNormalizer extends ObjectNormalizer
     public function normalize($object, $format = null, array $context = [])
     {
         $data = parent::normalize($object, $format, $context);
-        
+
         return array_filter($data, function ($value) {
             return null !== $value && '' !== $value;
         });
