@@ -3,17 +3,14 @@
 namespace AppBundle\Test\Unit\Service\User;
 
 use AppBundle\Contract\Entity\IUser;
+use AppBundle\Contract\Factory\Entity\IUserFactory;
 use AppBundle\Entity\User;
-use AppBundle\Factory\Entity\UserFactory;
 use AppBundle\Form\UserType;
 use AppBundle\Service\User\UserCreateService;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormErrorIterator;
 use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\Validator\ConstraintViolation;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
-use Symfony\Component\Validator\ConstraintViolationList;
 
 /**
  * Class UserCreateServiceTest
@@ -25,7 +22,7 @@ class UserCreateServiceTest extends TestCase
     {
         $mockUser = $this->createMock(User::class);
 
-        $mockUserFactory = $this->createMock(UserFactory::class);
+        $mockUserFactory = $this->createMock(IUserFactory::class);
         $mockUserFactory->expects($this->once())->method('createUser')->with()->willReturn($mockUser);
 
         $mockEm = $this->createMock(\Doctrine\ORM\EntityManagerInterface::class);
@@ -56,7 +53,7 @@ class UserCreateServiceTest extends TestCase
     {
         $mockUser = $this->createMock(User::class);
 
-        $mockUserFactory = $this->createMock(UserFactory::class);
+        $mockUserFactory = $this->createMock(IUserFactory::class);
         $mockUserFactory->expects($this->once())->method('createUser')->with()->willReturn($mockUser);
 
         $mockEm = $this->createMock(\Doctrine\ORM\EntityManagerInterface::class);

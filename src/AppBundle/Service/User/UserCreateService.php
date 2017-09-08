@@ -2,10 +2,10 @@
 
 namespace AppBundle\Service\User;
 
+use AppBundle\Contract\Factory\Entity\IUserFactory;
 use AppBundle\Contract\Service\User\IUserCreate;
 use AppBundle\Entity\User;
 use AppBundle\Exception\FormValidateException;
-use AppBundle\Factory\Entity\UserFactory;
 use AppBundle\Form\UserType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\FormErrorIterator;
@@ -21,7 +21,7 @@ class UserCreateService implements IUserCreate
     /** @var EntityManagerInterface $em */
     protected $em;
 
-    /** @var UserFactory $userFactory */
+    /** @var IUserFactory $userFactory */
     protected $userFactory;
 
     /** @var FormFactoryInterface $formFactory */
@@ -30,12 +30,12 @@ class UserCreateService implements IUserCreate
     /**
      * UserCreateService constructor.
      * @param EntityManagerInterface $em
-     * @param UserFactory $userFactory
+     * @param IUserFactory $userFactory
      * @param FormFactoryInterface $formFactory
      */
     public function __construct(
         EntityManagerInterface $em,
-        UserFactory $userFactory,
+        IUserFactory $userFactory,
         FormFactoryInterface $formFactory
     )
     {

@@ -2,13 +2,14 @@
 
 namespace AppBundle\Factory\Entity;
 
+use AppBundle\Contract\Factory\Entity\IUserFactory;
 use AppBundle\Entity\User;
 
 /**
  * Class UserFactory
  * @package AppBundle\Factory\Entity
  */
-class UserFactory
+class UserFactory implements IUserFactory
 {
     /**
      * @return User
