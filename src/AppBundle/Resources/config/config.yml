@@ -14,4 +14,10 @@ services:
         tags:
             - { name: kernel.event_listener, event: kernel.response, method: onKernelResponse }
 
+    kernel.listener.app_exception_listener:
+        class: AppBundle\EventListener\AppExceptionListener
+        arguments: ['@serializer', '@service_container']
+        tags:
+            - { name: kernel.event_listener, event: kernel.exception, method: onKernelException }
+
 

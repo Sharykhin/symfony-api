@@ -1,0 +1,6 @@
+AppBundle\Entity\User:
+    properties:
+        username:
+            - NotBlank: ~
+        firstName:
+            - NotBlank: ~
