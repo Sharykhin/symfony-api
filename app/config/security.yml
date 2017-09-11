@@ -2,7 +2,8 @@
 # https://symfony.com/doc/current/security.html
 security:
     encoders:
-        AppBundle\Entity\User: bcrypt
+        AppBundle\Entity\User:
+            algorithm: bcrypt
 
     # https://symfony.com/doc/current/security.html#b-configuring-how-users-are-loaded
     providers:
@@ -12,7 +13,7 @@ security:
         database_users:
             entity:
                 class: AppBundle:User
-                property: username
+                property: login
 
     firewalls:
         # disables authentication for assets and the profiler, adapt it according to your needs
@@ -20,13 +21,15 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
 
-        main:
-            pattern: ^/api
-            anonymous: ~
-            provider: database_users
-            stateless: true
-            json_login:
-                check_path: /api/login
+#        main:
+#            pattern: ^/api
+#            anonymous: ~
+#            provider: database_users
+#            stateless: false
+#            json_login:
+#                check_path: /api/login
+#                username_path: login
+#                password_path: password
             # activate different ways to authenticate
 
             # https://symfony.com/doc/current/security.html#a-configuring-how-your-users-will-authenticate

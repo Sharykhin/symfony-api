@@ -151,19 +151,28 @@ class User implements IUser, UserInterface
         return [$this->role];
     }
 
+    /**
+     * @return null
+     */
     public function getSalt()
     {
         return null;
     }
 
+    /**
+     * @return string
+     */
     public function getUsername()
     {
         return $this->login;
     }
 
+    /**
+     *
+     */
     public function eraseCredentials()
     {
-
+        return null;
     }
 
     /**
