@@ -14,5 +14,5 @@ interface IUserAuthenticate
      * @param array $parameters
      * @return IAdvancedUser
      */
-    public function authenticate(array $parameters) : IAdvancedUser;
+    public function execute(array $parameters) : IAdvancedUser;
 }

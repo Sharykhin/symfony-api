@@ -36,7 +36,7 @@ class FirebaseJWTService implements IJWTManager
     public function encode(array $payload = [], $alg = 'HS256', $keyId = null, $head = null): string
     {
         $key = $this->container->getParameter('jwt_secret_key');
-        $exp = $this->container->getParameter('jwt_token_exp');
+        $exp = $this->container->getParameter('jwt_token_exp') ?: 10;
 
         $token = array(
             "sub" => $payload,

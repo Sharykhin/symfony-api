@@ -28,7 +28,7 @@ class AuthController extends AbstractController
         IJWTManager $authManager
     ) : JsonResponse
     {
-        $user = $userAuthenticate->authenticate($request->request->all());
+        $user = $userAuthenticate->execute($request->request->all());
 
         $token = $authManager->encode(['id' => $user->getId(), 'roles' => $user->getRoles()]);
 

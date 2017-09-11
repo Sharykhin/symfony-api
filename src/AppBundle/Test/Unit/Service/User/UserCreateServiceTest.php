@@ -11,6 +11,7 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormErrorIterator;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 /**
  * Class UserCreateServiceTest
@@ -21,6 +22,9 @@ class UserCreateServiceTest extends TestCase
     public function testSuccessCreateUser()
     {
         $mockUser = $this->createMock(User::class);
+        $mockUser->expects($this->once())->method('setPassword')->with('hashedPassword');
+        $mockUser->expects($this->once())->method('setRole')->with('ROLE_USER');
+
 
         $mockUserFactory = $this->createMock(IUserFactory::class);
         $mockUserFactory->expects($this->once())->method('createUser')->with()->willReturn($mockUser);
@@ -33,14 +37,18 @@ class UserCreateServiceTest extends TestCase
         $mockFormErrorIterator->expects($this->once())->method('count')->willReturn(0);
 
         $mockForm = $this->createMock(Form::class);
-        $mockForm->expects($this->once())->method('submit')->with(['username' => 'Mike', 'first_name'=>'Bob'])->willReturnSelf();
+        $mockForm->expects($this->once())->method('submit')->with(['login' => 'jonny', 'first_name'=>'John', 'last_name' => 'McClain', 'password'=> '11111111'])->willReturnSelf();
         $mockForm->expects($this->once())->method('getErrors')->with(true)->willReturn($mockFormErrorIterator);
 
         $mockFormFactory = $this->createMock(FormFactoryInterface::class);
         $mockFormFactory->expects($this->once())->method('create')->with(UserType::class, $mockUser)->willReturn($mockForm);
 
-        $userService = new UserCreateService($mockEm, $mockUserFactory, $mockFormFactory);
-        $user = $userService->execute(['username' => 'Mike', 'first_name'=>'Bob'], false);
+
+        $mockPasswordEncoder = $this->createMock(UserPasswordEncoderInterface::class);
+        $mockPasswordEncoder->expects($this->once())->method('encodePassword')->with($mockUser, '11111111')->willReturn('hashedPassword');
+
+        $userService = new UserCreateService($mockEm, $mockUserFactory, $mockFormFactory, $mockPasswordEncoder);
+        $user = $userService->execute(['login' => 'jonny', 'first_name'=>'John', 'last_name' => 'McClain', 'password'=> '11111111'], false);
 
         $this->assertTrue($user instanceof IUser);
     }
@@ -52,6 +60,8 @@ class UserCreateServiceTest extends TestCase
     public function testFailCreateUser()
     {
         $mockUser = $this->createMock(User::class);
+        $mockUser->expects($this->never())->method('setPassword');
+        $mockUser->expects($this->never())->method('setRole');
 
         $mockUserFactory = $this->createMock(IUserFactory::class);
         $mockUserFactory->expects($this->once())->method('createUser')->with()->willReturn($mockUser);
@@ -67,11 +77,14 @@ class UserCreateServiceTest extends TestCase
         $mockForm->expects($this->once())->method('submit')->with(['username' => 'Mike'])->willReturnSelf();
         $mockForm->expects($this->once())->method('getErrors')->with(true)->willReturn($mockFormErrorIterator);
 
+        $mockPasswordEncoder = $this->createMock(UserPasswordEncoderInterface::class);
+        $mockPasswordEncoder->expects($this->never())->method('encodePassword');
+
         $mockFormFactory = $this->createMock(FormFactoryInterface::class);
         $mockFormFactory->expects($this->once())->method('create')->with(UserType::class, $mockUser)->willReturn($mockForm);
 
 
-        $userService = new UserCreateService($mockEm, $mockUserFactory, $mockFormFactory);
+        $userService = new UserCreateService($mockEm, $mockUserFactory, $mockFormFactory, $mockPasswordEncoder);
         $userService->execute(['username' => 'Mike'], false);
     }
 
