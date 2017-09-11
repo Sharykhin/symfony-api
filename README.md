@@ -28,6 +28,8 @@ format example:
 }
 ```
 
+JWT is used for authentication. Currently [php-jwt](https://github.com/firebase/php-jwt) package is in use.
+
 Install:
 --------
 
