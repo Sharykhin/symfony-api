@@ -1,0 +1,7 @@
+#Uncomment this just in case Security directory is under exclude from services
+#services:
+#    security.access.user_voter:
+#            class:      AppBundle\Security\Voter\UserVoter
+#            public:     false
+#            tags:
+#               - { name: security.voter }

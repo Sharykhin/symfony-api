@@ -21,11 +21,11 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
 
-#        main:
-#            pattern: ^/api
-#            anonymous: ~
+        api:
+            pattern: ^/api
+            anonymous: ~
 #            provider: database_users
-#            stateless: false
+#            stateless: true
 #            json_login:
 #                check_path: /api/login
 #                username_path: login

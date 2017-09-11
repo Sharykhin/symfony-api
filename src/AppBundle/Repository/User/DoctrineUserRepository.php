@@ -74,4 +74,18 @@ class DoctrineUserRepository implements IUserRepository
 
         return $qb->getQuery()->getOneOrNullResult();
     }
+
+    /**
+     * @param $id
+     * @return User|null
+     */
+    public function findById($id) : ?User
+    {
+        $qb = $this->em->createQueryBuilder();
+        $qb->select('u')
+            ->from('AppBundle:User', 'u')
+            ->where('u.id = :id')
+            ->setParameter('id', $id);
+        return $qb->getQuery()->getOneOrNullResult();
+    }
 }

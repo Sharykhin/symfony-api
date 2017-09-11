@@ -18,3 +18,5 @@ parameters:
     # A secret key that's used to generate certain security-related tokens
     secret: ThisTokenIsNotSoSecretChangeIt
     camel_case_to_underscore_response: true
+    jwt_secret_key:
+    jwt_token_exp: 3600

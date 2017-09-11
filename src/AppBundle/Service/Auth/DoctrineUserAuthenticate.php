@@ -2,6 +2,7 @@
 
 namespace AppBundle\Service\Auth;
 
+use AppBundle\Contract\Entity\IAdvancedUser;
 use AppBundle\Contract\Factory\Entity\IUserFactory;
 use AppBundle\Contract\Repository\User\IUserRepository;
 use AppBundle\Contract\Service\Auth\IUserAuthenticate;
@@ -11,7 +12,6 @@ use AppBundle\Exception\FormValidateException;
 use AppBundle\Form\UserType;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Class DoctrineUserAuthenticate
@@ -53,10 +53,10 @@ class DoctrineUserAuthenticate implements IUserAuthenticate
 
     /**
      * @param array $parameters
-     * @return UserInterface
+     * @return IAdvancedUser
      * @throws FormValidateException
      */
-    public function authenticate(array $parameters) : UserInterface
+    public function authenticate(array $parameters) : IAdvancedUser
     {
         /** @var User $user */
         $user = $this->userFactory->createUser();

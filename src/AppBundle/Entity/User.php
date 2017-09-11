@@ -2,14 +2,13 @@
 
 namespace AppBundle\Entity;
 
-use AppBundle\Contract\Entity\IUser;
-use Symfony\Component\Security\Core\User\UserInterface;
+use AppBundle\Contract\Entity\IAdvancedUser;
 
 /**
  * Class User
  * @package AppBundle\Entity
  */
-class User implements IUser, UserInterface
+class User implements IAdvancedUser
 {
     /** @var  $id */
     private $id;

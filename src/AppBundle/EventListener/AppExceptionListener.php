@@ -5,9 +5,13 @@ namespace AppBundle\EventListener;
 use AppBundle\Exception\AuthInvalidCredentials;
 use AppBundle\Exception\ConstraintValidateException;
 use AppBundle\Exception\FormValidateException;
+use Firebase\JWT\ExpiredException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\Security\Core\Exception\InsufficientAuthenticationException;
 use Symfony\Component\Serializer\SerializerInterface;
 
 /**
@@ -74,6 +78,42 @@ class AppExceptionListener
             ];
             $json = $this->serializer->serialize($data, 'json');
             $response = new JsonResponse($json, JsonResponse::HTTP_UNAUTHORIZED, [], true);
+            $event->setResponse($response);
+        }
+
+        if ($exception instanceof ExpiredException) {
+            $data = [
+                'success' => false,
+                'data' => null,
+                'errors' => 'Token has been expired',
+                'meta' => null
+            ];
+            $json = $this->serializer->serialize($data, 'json');
+            $response = new JsonResponse($json, JsonResponse::HTTP_UNAUTHORIZED, [], true);
+            $event->setResponse($response);
+        }
+
+        if ($exception instanceof InsufficientAuthenticationException) {
+            $data = [
+                'success' => false,
+                'data' => null,
+                'errors' => $exception->getMessage(),
+                'meta' => null
+            ];
+            $json = $this->serializer->serialize($data, 'json');
+            $response = new JsonResponse($json, JsonResponse::HTTP_UNAUTHORIZED, [], true);
+            $event->setResponse($response);
+        }
+
+        if ($exception instanceof AccessDeniedHttpException) {
+            $data = [
+                'success' => false,
+                'data' => null,
+                'errors' => $exception->getMessage(),
+                'meta' => null
+            ];
+            $json = $this->serializer->serialize($data, 'json');
+            $response = new JsonResponse($json, JsonResponse::HTTP_FORBIDDEN, [], true);
             $event->setResponse($response);
         }
     }

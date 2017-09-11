@@ -2,7 +2,7 @@
 
 namespace AppBundle\Contract\Service\Auth;
 
-use Symfony\Component\Security\Core\User\UserInterface;
+use AppBundle\Contract\Entity\IAdvancedUser;
 
 /**
  * Interface IUserAuthenticate
@@ -12,7 +12,7 @@ interface IUserAuthenticate
 {
     /**
      * @param array $parameters
-     * @return UserInterface
+     * @return IAdvancedUser
      */
-    public function authenticate(array $parameters) : UserInterface;
+    public function authenticate(array $parameters) : IAdvancedUser;
 }

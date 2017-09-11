@@ -46,4 +46,13 @@ abstract class AbstractController extends Controller
     {
         return $this->json(['success' => true, 'data' => null, 'errors' => $errors, 'meta' => null], $status, $headers, $context);
     }
+
+    /**
+     * @param string $error
+     * @return JsonResponse
+     */
+    public function notFound(string $error = 'resource was not fount') : JsonResponse
+    {
+        return $this->json(['success' => true, 'data' => null, 'errors' => $error, 'meta' => null], JsonResponse::HTTP_NOT_FOUND, [], []);
+    }
 }

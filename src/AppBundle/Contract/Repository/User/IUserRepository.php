@@ -28,4 +28,11 @@ interface IUserRepository
      * @return User|null
      */
     public function findByLogin(string $login) : ?User;
+
+
+    /**
+     * @param $id
+     * @return User|null
+     */
+    public function findById($id) : ?User;
 }

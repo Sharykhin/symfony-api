@@ -4,9 +4,12 @@ namespace AppBundle\Controller;
 
 use AppBundle\Contract\Repository\User\IUserRepository;
 use AppBundle\Contract\Service\User\IUserCreate;
+use AppBundle\Entity\User;
+use AppBundle\Security\Voter\UserVoter;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -55,16 +58,28 @@ class UserController extends AbstractController
     }
 
     /**
-     * @param Request $request
+     * @param IUserRepository $userRepository
+     * @param string $userId
      * @return JsonResponse
      *
-     * @Route("/api/login", name="post_login")
-     * @Method("POST")
+     * @Route("/api/users/{userId}", name="get_user")
+     * @Method("GET")
      */
-    public function login(
-        Request $request
+    public function getOneUser(
+        string $userId,
+        IUserRepository $userRepository
     ) : JsonResponse
     {
-        return $this->success([]);
+
+        $this->denyAccessUnlessGranted(['IS_AUTHENTICATED_FULLY'], $this->getUser());
+
+        $user = $userRepository->findById($userId);
+        if (!$user instanceof User) {
+            return $this->notFound('User was not found');
+        }
+
+        $this->denyAccessUnlessGranted(UserVoter::READ, $user);
+
+        return $this->success($user, JsonResponse::HTTP_OK, [], ['groups' => ['list']]);
     }
 }

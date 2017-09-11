@@ -13,5 +13,8 @@ interface IUser extends IId
      */
     public function getFirstName() : ?string;
 
+    /**
+     * @return null|string
+     */
     public function getLastName() : ?string;
 }
