@@ -1,6 +1,7 @@
 <?php
 
 namespace AppBundle\Contract\Repository\User;
+use AppBundle\Entity\User;
 
 /**
  * Interface IUserRepository
@@ -21,4 +22,10 @@ interface IUserRepository
      * @return int
      */
     public function count(array $criteria = []) : int;
+
+    /**
+     * @param string $login
+     * @return User|null
+     */
+    public function findByLogin(string $login) : ?User;
 }

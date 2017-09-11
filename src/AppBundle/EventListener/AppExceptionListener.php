@@ -2,6 +2,7 @@
 
 namespace AppBundle\EventListener;
 
+use AppBundle\Exception\AuthInvalidCredentials;
 use AppBundle\Exception\ConstraintValidateException;
 use AppBundle\Exception\FormValidateException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -61,6 +62,18 @@ class AppExceptionListener
             $json = $this->serializer->serialize($data, 'json');
 
             $response = new JsonResponse($json, JsonResponse::HTTP_BAD_REQUEST, [], true);
+            $event->setResponse($response);
+        }
+
+        if ($exception instanceof AuthInvalidCredentials) {
+            $data = [
+                'success' => false,
+                'data' => null,
+                'errors' => 'Invalid Credentials',
+                'meta' => null
+            ];
+            $json = $this->serializer->serialize($data, 'json');
+            $response = new JsonResponse($json, JsonResponse::HTTP_UNAUTHORIZED, [], true);
             $event->setResponse($response);
         }
     }

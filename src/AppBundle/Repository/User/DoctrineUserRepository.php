@@ -3,6 +3,7 @@
 namespace AppBundle\Repository\User;
 
 use AppBundle\Contract\Repository\User\IUserRepository;
+use AppBundle\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 
 /**
@@ -57,5 +58,20 @@ class DoctrineUserRepository implements IUserRepository
         $qb->select('count(u.id)')
             ->from('AppBundle:User', 'u');
         return $qb->getQuery()->getSingleScalarResult();
+    }
+
+    /**
+     * @param string $login
+     * @return User|null
+     */
+    public function findByLogin(string $login) : ?User
+    {
+        $qb = $this->em->createQueryBuilder();
+        $qb->select('u')
+            ->from('AppBundle:User', 'u')
+            ->where('u.login = :login')
+            ->setParameter('login', $login);
+
+        return $qb->getQuery()->getOneOrNullResult();
     }
 }

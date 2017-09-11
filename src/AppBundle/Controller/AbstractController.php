@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 abstract class AbstractController extends Controller
 {
     /**
-     * @param array|null $data
+     * @param null $data
      * @param int $status
      * @param array $headers
      * @param array $context
@@ -20,7 +20,7 @@ abstract class AbstractController extends Controller
      * @return JsonResponse
      */
     public function success(
-        array $data = null,
+        $data = null,
         $status = JsonResponse::HTTP_OK,
         array $headers = [],
         array $context = [],

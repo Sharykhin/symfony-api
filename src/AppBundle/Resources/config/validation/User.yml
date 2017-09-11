@@ -1,10 +1,11 @@
 AppBundle\Entity\User:
     properties:
         login:
-            - NotBlank: { groups: [registration] }
+            - NotBlank: ~
 
         password:
-            - NotBlank: { groups: [registration] }
+            - NotBlank: { groups: [registration, login] }
+            - Length: { min: 8, groups: [registration, login] }
 
         lastName:
             - NotBlank: { groups: [registration]}
