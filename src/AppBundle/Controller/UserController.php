@@ -9,6 +9,7 @@ use AppBundle\Security\Voter\UserVoter;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -63,6 +64,7 @@ class UserController extends AbstractController
      *
      * @Route("/api/users/{userId}", name="get_user")
      * @Method("GET")
+     * Security("has_role('ROLE_USER')")
      */
     public function getOneUser(
         string $userId,

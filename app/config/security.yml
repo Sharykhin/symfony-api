@@ -15,6 +15,9 @@ security:
                 class: AppBundle:User
                 property: login
 
+        jwt_key_user_provider:
+            id: AppBundle\Security\JwtKeyUserProvider
+
     firewalls:
         # disables authentication for assets and the profiler, adapt it according to your needs
         dev:
@@ -24,16 +27,8 @@ security:
         api:
             pattern: ^/api
             anonymous: ~
-#            provider: database_users
+            simple_preauth:
+                authenticator: AppBundle\Security\JwtKeyAuthenticator
             stateless: true
-#            json_login:
-#                check_path: /api/login
-#                username_path: login
-#                password_path: password
-            # activate different ways to authenticate
+            provider: jwt_key_user_provider
 
-            # https://symfony.com/doc/current/security.html#a-configuring-how-your-users-will-authenticate
-            #http_basic: ~
-
-            # https://symfony.com/doc/current/security/form_login_setup.html
-            #form_login: ~
