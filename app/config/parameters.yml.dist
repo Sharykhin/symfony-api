@@ -20,4 +20,3 @@ parameters:
     camel_case_to_underscore_response: true
     jwt_secret_key:
     jwt_token_exp: 3600
-    jwt_auth: true
