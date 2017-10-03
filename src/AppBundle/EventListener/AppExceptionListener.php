@@ -49,7 +49,7 @@ class AppExceptionListener
         if ($exception instanceof ConstraintValidateException || $exception instanceof FormValidateException) {
             $errors = $exception->getErrors();
 
-            if($this->container->getParameter('output_camel_case_to_underscore') === true) {
+            if($this->container->getParameter('camel_case_to_underscore_response') === true) {
                 $keys = array_keys($errors);
                 $keys = array_map(function ($key) {
                     return from_camel_case($key);

@@ -45,4 +45,8 @@ Run unit testing:
 ./vendor/bin/phpunit
 ```
 
+By default JWT authentication is implemented in request listener 
+under ```src/AppBundle/EventListener/AppRequestListener.php```
+in case another authentication method is in use change parameter
+*jwt_auth* to *false*
 

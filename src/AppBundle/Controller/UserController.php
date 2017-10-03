@@ -69,7 +69,6 @@ class UserController extends AbstractController
         IUserRepository $userRepository
     ) : JsonResponse
     {
-
         $this->denyAccessUnlessGranted(['IS_AUTHENTICATED_FULLY'], $this->getUser());
 
         $user = $userRepository->findById($userId);

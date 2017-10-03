@@ -25,7 +25,7 @@ security:
             pattern: ^/api
             anonymous: ~
 #            provider: database_users
-#            stateless: true
+            stateless: true
 #            json_login:
 #                check_path: /api/login
 #                username_path: login

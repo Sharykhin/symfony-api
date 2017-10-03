@@ -65,7 +65,8 @@ class AppRequestListener
         }
 
         $authHeader = $event->getRequest()->headers->get('Authorization');
-        if (strpos(mb_strtolower($authHeader), 'bearer') === 0) {
+        $isJwtEnabled = $this->container->getParameter('jwt_auth');
+        if (strpos(mb_strtolower($authHeader), 'bearer') === 0 && $isJwtEnabled) {
             $token = substr($authHeader, mb_strlen('Bearer '));
             $payload = $this->tokenManager->decode($token);
             if (!is_null($payload)) {
