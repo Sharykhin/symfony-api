@@ -3,9 +3,9 @@
 namespace AppBundle\Security;
 
 use AppBundle\Contract\Repository\User\IUserRepository;
+use AppBundle\Entity\User;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
-use Symfony\Component\Security\Core\User\User;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use AppBundle\Contract\Service\Token\IJWTManager;

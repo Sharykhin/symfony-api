@@ -56,4 +56,12 @@ services:
 #                  # pass this specific service id
 #                  id: AppBundle\Contract\Repository\User\IUserRepository
 
+    AppBundle\Controller\DefaultController:
+        public: true
+        tags:
+            - name: controller.service_arguments
+              action: logAction
+              argument: logger
+              id: monolog.logger.foo
+
 
