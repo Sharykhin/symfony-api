@@ -37,8 +37,8 @@ monolog:
             path: '%kernel.logs_dir%/foo.log'
             channels: [foo]
             formatter: Monolog\Formatter\JsonFormatter
-        mail:
-            type: fingers_crossed
+#        mail:
+#            type: fingers_crossed
 #        main:
 #            type: stream
 #            path: '%kernel.logs_dir%/%kernel.environment%.log'
