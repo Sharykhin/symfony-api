@@ -27,3 +27,7 @@ AppBundle\Document\MaterialItem:
             targetDocument: AppBundle\Document\Location
             cascade: all
             storeAs: id
+    indexes:
+        index1:
+            keys:
+                location: asc

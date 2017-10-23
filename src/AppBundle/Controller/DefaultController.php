@@ -4,6 +4,8 @@ namespace AppBundle\Controller;
 
 use AppBundle\Document\Location;
 use AppBundle\Document\MaterialItem;
+use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ODM\MongoDB\DocumentManager;
 use Psr\Log\LoggerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -43,12 +45,12 @@ class DefaultController extends Controller
     /**
      * @Route("/item", name="add_item")
      */
-    public function addItem()
+    public function addItem(ManagerRegistry $manager)
     {
-        $dm = $this->get('doctrine_mongodb')->getManager();
+        $dm = $manager->getManager();
 
         $location = new Location();
-        $location->setAddress('New-York, Bavarya str. 12/2, 220137');
+        $location->setAddress('New-York, Sosiska str. 12/2, 220137');
         $dm->persist($location);
 
         $item = new MaterialItem();

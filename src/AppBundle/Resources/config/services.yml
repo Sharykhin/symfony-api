@@ -1,0 +1,87 @@
+imports:
+    - { resource: voters.yml }
+
+services:
+    # makes classes in src/AppBundle available to be used as services
+    # this creates a service per class whose id is the fully-qualified class name
+    AppBundle\:
+        resource: '../../*'
+        # you can exclude directories or files
+        # but if a service is unused, it's removed anyway
+        exclude: '../../{Entity,Tests,Normalizer}'
+
+    # controllers are imported separately to make sure they're public
+    # and have a tag that allows actions to type-hint services
+    AppBundle\Controller\:
+        resource: '../../Controller'
+        public: true
+        tags: ['controller.service_arguments']
+
+    Doctrine\DBAL\Logging\DebugStack:
+        class: Doctrine\DBAL\Logging\DebugStack
+
+    AppBundle\Contract\Service\Token\IJWTManager:
+        class: AppBundle\Service\Token\FirebaseJWTService
+        arguments: ['@service_container']
+
+    jwt_manager:
+        alias: AppBundle\Contract\Service\Token\IJWTManager
+        public: false
+
+    AppBundle\Contract\Repository\User\IUserRepository:
+        class: AppBundle\Repository\User\DoctrineUserRepository
+        arguments: ['@doctrine.orm.default_entity_manager']
+
+    app.user_repository:
+        alias: AppBundle\Contract\Repository\User\IUserRepository
+        public: false
+
+    kernel.listener.app_request_listener:
+        class: AppBundle\EventListener\AppRequestListener
+        arguments: ['@service_container', '@Doctrine\DBAL\Logging\DebugStack', '@jwt_manager', '@app.user_repository']
+        tags:
+            - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest, priority: 7 }
+
+    kernel.listener.app_response_listener:
+        class: AppBundle\EventListener\AppResponseListener
+        arguments: ['@Doctrine\DBAL\Logging\DebugStack']
+        tags:
+            - { name: kernel.event_listener, event: kernel.response, method: onKernelResponse }
+
+    kernel.listener.app_exception_listener:
+        class: AppBundle\EventListener\AppExceptionListener
+        arguments: ['@serializer', '@service_container']
+        tags:
+            - { name: kernel.event_listener, event: kernel.exception, method: onKernelException }
+
+    #Uncomment in case you want to hide empty strings or null in the output
+#    nullable_normalizer:
+#        class: AppBundle\Normalizer\NullableObjectNormalizer
+#        tags:
+#            - { name: serializer.normalizer }
+
+
+#    AppBundle\Controller\UserController:
+#            public: true
+#            tags:
+#                # add multiple tags to control multiple args
+#                - name: controller.service_arguments
+#                  action: get
+#                  argument: userRepository
+#                  # pass this specific service id
+#                  id: AppBundle\Contract\Repository\User\IUserRepository
+
+    AppBundle\Controller\DefaultController:
+        public: true
+        tags:
+            - name: controller.service_arguments
+              action: logAction
+              argument: logger
+              id: monolog.logger.foo
+            - name: controller.service_arguments
+              action: addItem
+              argument: manager
+              id: doctrine_mongodb
+
+
+
