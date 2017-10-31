@@ -1,0 +1,10 @@
+<?php
+
+namespace AppBundle\Document;
+
+class Location
+{
+    protected $id;
+
+    protected $address;
+}

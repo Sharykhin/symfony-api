@@ -1,0 +1,33 @@
+AppBundle\Document\MaterialItem:
+    collection: material_list
+    fields:
+        id:
+            id: true
+
+        code:
+            type: string
+
+        description:
+            type: string
+
+        unit:
+            type: string
+
+        quantity:
+            type: float
+
+        unitPrice:
+            type: float
+
+        total:
+            type: float
+
+    referenceOne:
+        location:
+            targetDocument: AppBundle\Document\Location
+            cascade: all
+            storeAs: id
+    indexes:
+        index1:
+            keys:
+                location: asc

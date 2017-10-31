@@ -1,0 +1,8 @@
+AppBundle\Document\Location:
+    collection: locations
+    fields:
+        id:
+            id: true
+
+        address:
+            type: string
