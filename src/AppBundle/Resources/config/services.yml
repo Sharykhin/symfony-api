@@ -36,24 +36,6 @@ services:
         alias: AppBundle\Contract\Repository\User\IUserRepository
         public: false
 
-    kernel.listener.app_request_listener:
-        class: AppBundle\EventListener\AppRequestListener
-        arguments: ['@service_container', '@Doctrine\DBAL\Logging\DebugStack', '@jwt_manager', '@app.user_repository']
-        tags:
-            - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest, priority: 7 }
-
-    kernel.listener.app_response_listener:
-        class: AppBundle\EventListener\AppResponseListener
-        arguments: ['@Doctrine\DBAL\Logging\DebugStack']
-        tags:
-            - { name: kernel.event_listener, event: kernel.response, method: onKernelResponse }
-
-    kernel.listener.app_exception_listener:
-        class: AppBundle\EventListener\AppExceptionListener
-        arguments: ['@serializer', '@service_container']
-        tags:
-            - { name: kernel.event_listener, event: kernel.exception, method: onKernelException }
-
     #Uncomment in case you want to hide empty strings or null in the output
 #    nullable_normalizer:
 #        class: AppBundle\Normalizer\NullableObjectNormalizer
