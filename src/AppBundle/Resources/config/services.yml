@@ -2,6 +2,15 @@ imports:
     - { resource: voters.yml }
 
 services:
+    _defaults:
+        # automatically injects dependencies in your services
+        autowire: true
+        # automatically registers your services as commands, event subscribers, etc.
+        autoconfigure: true
+        # this means you cannot fetch services directly from the container via $container->get()
+        # if you need to do this, you can override this setting on individual services
+        public: false
+
     # makes classes in src/AppBundle available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
     AppBundle\:
@@ -19,6 +28,10 @@ services:
 
     Doctrine\DBAL\Logging\DebugStack:
         class: Doctrine\DBAL\Logging\DebugStack
+
+    # I don't why but it requires by symfony, since it can't recognize Doctrine\DBAL\Logging\DebugStack as a service
+    doctrine_logger:
+        alias: Doctrine\DBAL\Logging\DebugStack
 
     AppBundle\Contract\Service\Token\IJWTManager:
         class: AppBundle\Service\Token\FirebaseJWTService

@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Contract\Repository\User\IUserRepository;
 use AppBundle\Contract\Service\User\IUserCreate;
+use AppBundle\Contract\Service\User\IUserUpdate;
 use AppBundle\Entity\User;
 use AppBundle\Security\Voter\UserVoter;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -79,6 +80,34 @@ class UserController extends AbstractController
         }
 
         $this->denyAccessUnlessGranted(UserVoter::READ, $user);
+
+        return $this->success($user, JsonResponse::HTTP_OK, [], ['groups' => ['list']]);
+    }
+
+    /**
+     * @param string $userId
+     * @param IUserRepository $userRepository
+     * @return JsonResponse
+     *
+     * @Route("/api/users/{userId}", name="get_user")
+     * @Method("PUT")
+     * @Security("has_role('ROLE_USER')")
+     */
+    public function updateUser(
+        string $userId,
+        IUserRepository $userRepository,
+        IUserUpdate $userUpdate
+    ) : JsonResponse
+    {
+        $user = $userRepository->findById($userId);
+
+        $this->denyAccessUnlessGranted(UserVoter::UPDATE, $user);
+
+        if (!$user instanceof User) {
+            return $this->notFound('User was not found');
+        }
+
+        $user = $userUpdate->execute($user, []);
 
         return $this->success($user, JsonResponse::HTTP_OK, [], ['groups' => ['list']]);
     }

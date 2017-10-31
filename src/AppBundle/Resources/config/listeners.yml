@@ -1,7 +1,11 @@
 services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
     kernel.listener.app_request_listener:
         class: AppBundle\EventListener\AppRequestListener
-        arguments: ['@service_container', '@Doctrine\DBAL\Logging\DebugStack', '@jwt_manager', '@app.user_repository']
+        arguments: ['@service_container', '@doctrine_logger']
         tags:
             - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest, priority: 7 }
 
