@@ -61,6 +61,7 @@ class DefaultController extends Controller
         $item->setUnitPrice(72.34);
         $item->setTotal(118.47);
         $item->setLocation($location);
+
         $dm->persist($item);
 
         $item2 = new MaterialItem();
