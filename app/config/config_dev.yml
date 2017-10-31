@@ -39,6 +39,21 @@ monolog:
             formatter: Monolog\Formatter\JsonFormatter
 #        mail:
 #            type: fingers_crossed
+#            action_level: critical
+#            handler: deduplicated
+#        deduplicated:
+#            type: deduplication
+#            handler: swift
+#        swift:
+#            type:       swift_mailer
+#            from_email: 'error@example.com'
+#            to_email:   'chapal@inbox.ru'
+#            # or list of recipients
+#            # to_email:   ['dev1@example.com', 'dev2@example.com', ...]
+#            subject:    'An Error Occurred! %%message%%'
+#            level:      debug
+#            formatter:  monolog.formatter.html
+#            content_type: text/html
 #        main:
 #            type: stream
 #            path: '%kernel.logs_dir%/%kernel.environment%.log'
