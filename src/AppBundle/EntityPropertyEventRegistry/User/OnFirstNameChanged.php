@@ -2,6 +2,7 @@
 
 namespace AppBundle\EntityPropertyEventRegistry\User;
 
+use AppBundle\Contract\Queue\IMailPublisher;
 use AppBundle\Entity\User;
 
 /**
@@ -10,6 +11,20 @@ use AppBundle\Entity\User;
  */
 class OnFirstNameChanged
 {
+    /** @var IMailPublisher $mailPublisher */
+    protected $mailPublisher;
+
+    /**
+     * OnFirstNameChanged constructor.
+     * @param IMailPublisher $mailPublisher
+     */
+    public function __construct(
+        IMailPublisher $mailPublisher
+    )
+    {
+        $this->mailPublisher = $mailPublisher;
+    }
+
     /**
      * @param User $user
      * @param string $oldValue
@@ -17,6 +32,10 @@ class OnFirstNameChanged
      */
     public function execute(User $user, string $oldValue, string $newValue) : void
     {
-       var_dump('ha ha ha');
+        $this->mailPublisher->publish(IMailPublisher::FIRST_NAME_CHANGED_TYPE, [
+            'email' => 'chapal@inbox.ru',
+            'first_name' => $newValue,
+            'old_name' => $oldValue,
+        ]);
     }
 }

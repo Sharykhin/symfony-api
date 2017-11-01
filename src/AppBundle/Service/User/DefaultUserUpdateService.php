@@ -69,7 +69,7 @@ class DefaultUserUpdateService implements IUserUpdate
             throw new ConstraintValidateException($errors);
         }
 
-        /** @var FormErrorIterator $errors */
+        // Map array of values to the user entity
         $this->formFactory->create(UserType::class, $user)->submit($parameters, false);
 
         $uow = $this->em->getUnitOfWork();
