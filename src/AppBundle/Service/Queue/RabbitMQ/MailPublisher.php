@@ -11,17 +11,24 @@ use PhpAmqpLib\Message\AMQPMessage;
  */
 class MailPublisher implements IMailPublisher
 {
+    const CHANNEL_NAME = 'mail';
+
     /** @var \PhpAmqpLib\Channel\AMQPChannel $channel */
     protected $channel;
 
-    const CHANNEL_NAME = 'mail';
+    /** @var null|\PhpAmqpLib\Connection\AMQPStreamConnection $connection */
+    protected $connection;
 
     /**
      * MailPublisher constructor.
+     * @param StreamConnection $connection
      */
-    public function __construct()
+    public function __construct(
+        StreamConnection $connection
+    )
     {
-        $this->channel = StreamConnection::getInstance()->channel();
+        $this->connection = $connection->getConnection();
+        $this->channel = $this->connection->channel();
         $this->channel->queue_declare(self::CHANNEL_NAME, false, false, false, false);
     }
 
@@ -37,6 +44,6 @@ class MailPublisher implements IMailPublisher
         ]));
         $this->channel->basic_publish($msg, '', self::CHANNEL_NAME);
         $this->channel->close();
-        StreamConnection::getInstance()->close();
+        $this->connection->close();
     }
 }

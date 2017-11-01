@@ -3,6 +3,7 @@
 namespace AppBundle\Service\Queue\RabbitMQ;
 
 use PhpAmqpLib\Connection\AMQPStreamConnection;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Class StreamConnection
@@ -10,22 +11,30 @@ use PhpAmqpLib\Connection\AMQPStreamConnection;
  */
 class StreamConnection
 {
-    /** @var null|AMQPStreamConnection $insance */
-    private static $insance = null;
 
-
-    private function __construct()  {}
-    private function __clone() {}
+    /** @var AMQPStreamConnection $connection */
+    protected $connection;
 
     /**
-     * @return AMQPStreamConnection
+     * StreamConnection constructor.
+     * @param ContainerInterface $container
      */
-    public static function getInstance() : AMQPStreamConnection
-    {
-        if (is_null(self::$insance)) {
-            self::$insance = new AMQPStreamConnection('localhost', 5672, 'guest', 'guest');
-        }
+    public function __construct(
+        ContainerInterface $container
+    )  {
+        $this->connection = new AMQPStreamConnection(
+            $container->getParameter('rabbitmq_host'),
+            $container->getParameter('rabbitmq_port'),
+            $container->getParameter('rabbitmq_user'),
+            $container->getParameter('rabbitmq_pass')
+        );
+    }
 
-        return self::$insance;
+    /**
+     * @return null|AMQPStreamConnection
+     */
+    public function getConnection() : AMQPStreamConnection
+    {
+        return $this->connection;
     }
 }

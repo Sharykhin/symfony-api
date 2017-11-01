@@ -109,6 +109,7 @@ class UserController extends AbstractController
             return $this->notFound('User was not found');
         }
 
+        // TODO: this about better way for filtering income data;
         $fields = ['first_name'];
         $adminFields = array_merge($fields, ['last_name']);
 

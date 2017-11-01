@@ -21,3 +21,7 @@ parameters:
     jwt_secret_key:
     jwt_token_exp: 3600
     mongodb_server: "mongodb://localhost:27017"
+    rabbitmq_host: localhost
+    rabbitmq_port: 5672
+    rabbitmq_user: guest
+    rabbitmq_pass: guest

@@ -11,6 +11,8 @@ use AppBundle\Entity\User;
  */
 class OnFirstNameChanged
 {
+    const FIRST_NAME_CHANGED_TYPE = 'firstNameChanged';
+
     /** @var IMailPublisher $mailPublisher */
     protected $mailPublisher;
 
@@ -32,7 +34,7 @@ class OnFirstNameChanged
      */
     public function execute(User $user, string $oldValue, string $newValue) : void
     {
-        $this->mailPublisher->publish(IMailPublisher::FIRST_NAME_CHANGED_TYPE, [
+        $this->mailPublisher->publish(self::FIRST_NAME_CHANGED_TYPE, [
             'email' => 'chapal@inbox.ru',
             'first_name' => $newValue,
             'old_name' => $oldValue,

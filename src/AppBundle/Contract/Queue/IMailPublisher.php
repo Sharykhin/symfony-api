@@ -8,8 +8,6 @@ namespace AppBundle\Contract\Queue;
  */
 interface IMailPublisher
 {
-    const FIRST_NAME_CHANGED_TYPE = 'firstNameChanged';
-
     /**
      * @param string $mail
      * @param array $payload
