@@ -26,6 +26,10 @@ services:
         public: true
         tags: ['controller.service_arguments']
 
+    AppBundle\EntityPropertyEventRegistry\:
+        resource: '../../EntityPropertyEventRegistry/*'
+        public: true
+
     Doctrine\DBAL\Logging\DebugStack:
         class: Doctrine\DBAL\Logging\DebugStack
 

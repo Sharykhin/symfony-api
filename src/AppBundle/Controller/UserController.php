@@ -87,8 +87,9 @@ class UserController extends AbstractController
     /**
      * @param string $userId
      * @param IUserRepository $userRepository
+     * @param IUserUpdate $userUpdate
+     * @param Request $request
      * @return JsonResponse
-     *
      * @Route("/api/users/{userId}", name="get_user")
      * @Method("PUT")
      * @Security("has_role('ROLE_USER')")
@@ -96,7 +97,8 @@ class UserController extends AbstractController
     public function updateUser(
         string $userId,
         IUserRepository $userRepository,
-        IUserUpdate $userUpdate
+        IUserUpdate $userUpdate,
+        Request $request
     ) : JsonResponse
     {
         $user = $userRepository->findById($userId);
@@ -107,7 +109,13 @@ class UserController extends AbstractController
             return $this->notFound('User was not found');
         }
 
-        $user = $userUpdate->execute($user, []);
+        $fields = ['first_name'];
+        $adminFields = array_merge($fields, ['last_name']);
+
+        $fields = $this->isGranted(['ROLE_ADMIN'], $this->getUser()) ? $adminFields : $fields;
+        $parameters = request_intersect($request->request->all(), $fields);
+
+        $user = $userUpdate->execute($user, $parameters);
 
         return $this->success($user, JsonResponse::HTTP_OK, [], ['groups' => ['list']]);
     }

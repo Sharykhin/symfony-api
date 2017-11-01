@@ -9,3 +9,8 @@ AppBundle\Entity\User:
 
         lastName:
             - NotBlank: { groups: [registration]}
+
+        firstName:
+            - Type: { type: string, groups: [update]}
+            - Length: { min: 2, groups: [update]}
+            - NotNull: { message: 'This value can not be empty.', groups: [update] }

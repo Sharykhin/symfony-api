@@ -45,7 +45,7 @@ class User implements IAdvancedUser
      *
      * @return User
      */
-    public function setFirstName(string $firstName)
+    public function setFirstName(?string $firstName)
     {
         $this->firstName = $firstName;
 

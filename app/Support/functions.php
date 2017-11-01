@@ -10,3 +10,10 @@ if (!function_exists('from_camel_case')) {
         return implode('_', $ret);
     }
 }
+
+if (! function_exists('request_intersect')) {
+    function request_intersect(array $params, array $fields) : array {
+        $keys = array_flip(array_intersect($fields, array_keys($params)));
+        return array_intersect_key($params, $keys);
+    }
+}
