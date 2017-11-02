@@ -1,4 +1,6 @@
 AppBundle\Entity\User:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: email
     properties:
         login:
             - NotBlank: { groups: [registration, login] }
@@ -8,9 +10,14 @@ AppBundle\Entity\User:
             - Length: { min: 8, groups: [registration] }
 
         lastName:
-            - NotBlank: { groups: [registration]}
+            - Type: { type: string, groups: [update]}
+            - Length: { min: 2, groups: [update] }
 
         firstName:
             - Type: { type: string, groups: [update]}
             - Length: { min: 2, groups: [update]}
             - NotNull: { message: 'This value can not be empty.', groups: [update] }
+
+        email:
+            - NotBlank: { groups: [registration] }
+            - Email: { groups: [registration] }

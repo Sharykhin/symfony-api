@@ -23,13 +23,34 @@ class UserConstraints implements IUserConstraints
                         'min' => 2,
                         'groups' => ['update']
                     ]),
-                    new Assert\NotNull([
+                    new Assert\Type([
+                        'type'=>'string',
+                        'groups' => ['update']
+                    ]),
+                ],
+                'last_name' => [
+                    new Assert\Length([
+                        'min' => 2,
                         'groups' => ['update']
                     ]),
                     new Assert\Type([
                         'type'=>'string',
                         'groups' => ['update']
                     ]),
+                ],
+                'login' => [
+                    new Assert\NotBlank([
+                        'groups' => ['login', 'registration']
+                    ])
+                ],
+                'password' => [
+                    new Assert\NotBlank([
+                        'groups' => ['login', 'registration']
+                    ]),
+                    new Assert\Length([
+                        'min' => 8,
+                        'groups' => ['registration']
+                    ])
                 ]
             ],
             'allowMissingFields' => true

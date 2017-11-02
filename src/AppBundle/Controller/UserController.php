@@ -6,6 +6,7 @@ use AppBundle\Contract\Repository\User\IUserRepository;
 use AppBundle\Contract\Service\User\IUserCreate;
 use AppBundle\Contract\Service\User\IUserUpdate;
 use AppBundle\Entity\User;
+use AppBundle\FilterRequest\UserRequest;
 use AppBundle\Security\Voter\UserVoter;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -23,19 +24,27 @@ class UserController extends AbstractController
     /**
      * @param Request $request
      * @param IUserCreate $userCreate
+     * @param UserRequest $userRequest
      * @return JsonResponse
      *
      * @Route("/api/users", name="post_users")
      * @Method("POST")
+     * @Security("has_role('ROLE_ADMIN')")
      */
     public function create(
         Request $request,
-        IUserCreate $userCreate
+        IUserCreate $userCreate,
+        UserRequest $userRequest
     ) : JsonResponse
     {
-        $parameters = $request->request->all();
+
+        $parameters = $userRequest->filterRequest($request->request->all(), UserRequest::CREATE_ACTION);
+
         $user = $userCreate->execute($parameters);
-        return $this->success(['success' => true, 'data' => $user], JsonResponse::HTTP_CREATED, [], ['groups' => ['list']]);
+        return $this->success([
+            'success' => true,
+            'data' => $user
+        ], JsonResponse::HTTP_CREATED, [], ['groups' => ['list']]);
     }
 
     /**
@@ -90,6 +99,7 @@ class UserController extends AbstractController
      * @param IUserUpdate $userUpdate
      * @param Request $request
      * @return JsonResponse
+     *
      * @Route("/api/users/{userId}", name="get_user")
      * @Method("PUT")
      * @Security("has_role('ROLE_USER')")
@@ -98,7 +108,8 @@ class UserController extends AbstractController
         string $userId,
         IUserRepository $userRepository,
         IUserUpdate $userUpdate,
-        Request $request
+        Request $request,
+        UserRequest $userRequest
     ) : JsonResponse
     {
         $user = $userRepository->findById($userId);
@@ -110,11 +121,13 @@ class UserController extends AbstractController
         }
 
         // TODO: this about better way for filtering income data;
-        $fields = ['first_name'];
-        $adminFields = array_merge($fields, ['last_name']);
+//        $fields = ['first_name'];
+//        $adminFields = array_merge($fields, ['last_name']);
+//
+//        $fields = $this->isGranted(['ROLE_ADMIN'], $this->getUser()) ? $adminFields : $fields;
+//        $parameters = request_intersect($request->request->all(), $fields);
 
-        $fields = $this->isGranted(['ROLE_ADMIN'], $this->getUser()) ? $adminFields : $fields;
-        $parameters = request_intersect($request->request->all(), $fields);
+        $parameters = $userRequest->filterRequest($request->request->all(), UserRequest::UPDATE_ACTION);
 
         $user = $userUpdate->execute($user, $parameters);
 

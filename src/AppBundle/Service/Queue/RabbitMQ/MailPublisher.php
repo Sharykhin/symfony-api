@@ -27,9 +27,14 @@ class MailPublisher implements IMailPublisher
         StreamConnection $connection
     )
     {
-        $this->connection = $connection->getConnection();
-        $this->channel = $this->connection->channel();
-        $this->channel->queue_declare(self::CHANNEL_NAME, false, false, false, false);
+        try {
+            $this->connection = $connection->getConnection();
+            $this->channel = $this->connection->channel();
+            $this->channel->queue_declare(self::CHANNEL_NAME, false, false, false, false);
+        } catch (\Exception $exception) {
+            die('hohoho');
+        }
+
     }
 
     /**

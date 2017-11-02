@@ -63,12 +63,14 @@ class UserCreateService implements IUserCreate
         $errors = $this->formFactory->create(UserType::class, $user, ['validation_groups' => ['registration']])
             ->submit($parameters)
             ->getErrors(true);
+
         if ($errors->count() > 0) {
             throw new FormValidateException($errors);
         }
+
         $password = $this->passwordEncoder->encodePassword($user, $parameters['password']);
         $user->setPassword($password);
-        $user->setRole('ROLE_USER');
+        $user->setRole($parameters['role'] ?? 'ROLE_USER');
 
         $this->em->persist($user);
         $this->em->flush($user);

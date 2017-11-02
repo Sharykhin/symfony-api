@@ -9,6 +9,7 @@ AppBundle\Entity\User:
         firstName:
             type: string
             length: 80
+            nullable: true
 
         lastName:
             type: string
@@ -22,6 +23,11 @@ AppBundle\Entity\User:
         password:
             type: string
             length: 60
+
+        email:
+            type: string
+            length: 80
+            unique: true
 
         role:
             type: string

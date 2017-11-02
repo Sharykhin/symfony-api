@@ -22,12 +22,18 @@ class StreamConnection
     public function __construct(
         ContainerInterface $container
     )  {
-        $this->connection = new AMQPStreamConnection(
-            $container->getParameter('rabbitmq_host'),
-            $container->getParameter('rabbitmq_port'),
-            $container->getParameter('rabbitmq_user'),
-            $container->getParameter('rabbitmq_pass')
-        );
+        try {
+            $this->connection = new AMQPStreamConnection(
+                $container->getParameter('rabbitmq_host'),
+                $container->getParameter('rabbitmq_port'),
+                $container->getParameter('rabbitmq_user'),
+                $container->getParameter('rabbitmq_pass')
+            );
+        } catch (\Exception $exception) {
+            // Log error
+            throw $exception;
+        }
+
     }
 
     /**

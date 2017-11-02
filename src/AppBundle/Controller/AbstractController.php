@@ -23,7 +23,7 @@ abstract class AbstractController extends Controller
         $data = null,
         $status = JsonResponse::HTTP_OK,
         array $headers = [],
-        array $context = [],
+        array $context = ['groups' => ['list']],
         array $meta = null
     ) : JsonResponse
     {

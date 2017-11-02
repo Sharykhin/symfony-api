@@ -4,6 +4,7 @@ namespace AppBundle\Form;
 
 use AppBundle\Entity\User;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -33,6 +34,12 @@ class UserType extends AbstractType
             ->add('password', TextType::class, [
                 'property_path' => 'password'
             ])
+            ->add('email', EmailType::class, [
+                'property_path' => 'email'
+            ])
+            ->add('role', TextType::class, [
+                'property_path' => 'role'
+            ])
         ;
     }
 
@@ -43,7 +50,9 @@ class UserType extends AbstractType
     {
         $resolver->setDefaults(array(
             'csrf_protection' => false,
-            'data_class' => User::class
+            'data_class' => User::class,
+            //'allow_extra_fields' => false,
+            'extra_fields_message' => 'Request should not contain extra fields.',
         ));
     }
 }

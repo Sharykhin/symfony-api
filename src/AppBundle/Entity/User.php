@@ -13,17 +13,20 @@ class User implements IAdvancedUser
     /** @var  $id */
     private $id;
 
-    /** @var  string|null $firstName */
+    /** @var string|null $firstName */
     private $firstName;
 
-    /** @var  string $lastName */
+    /** @var string|null $lastName */
     private $lastName;
 
-    /** @var  string $login */
+    /** @var string $login */
     private $login;
 
-    /** @var  string $password */
+    /** @var string $password */
     private $password;
+
+    /** @var string $email */
+    private $email;
 
     /** @var  $roles */
     private $role;
@@ -41,7 +44,7 @@ class User implements IAdvancedUser
     /**
      * Set firstName
      *
-     * @param string $firstName
+     * @param string|null $firstName
      *
      * @return User
      */
@@ -65,11 +68,11 @@ class User implements IAdvancedUser
     /**
      * Set lastName
      *
-     * @param string $lastName
+     * @param string|null $lastName
      *
      * @return User
      */
-    public function setLastName(string $lastName)
+    public function setLastName(?string $lastName)
     {
         $this->lastName = $lastName;
 
@@ -196,5 +199,29 @@ class User implements IAdvancedUser
     public function getRole()
     {
         return $this->role;
+    }
+
+    /**
+     * Set email
+     *
+     * @param string $email
+     *
+     * @return User
+     */
+    public function setEmail(string $email)
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+
+    /**
+     * Get email
+     *
+     * @return string
+     */
+    public function getEmail() : ?string
+    {
+        return $this->email;
     }
 }

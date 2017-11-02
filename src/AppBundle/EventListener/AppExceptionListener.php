@@ -10,7 +10,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\Exception\InsufficientAuthenticationException;
 use Symfony\Component\Serializer\SerializerInterface;
 
@@ -52,7 +51,7 @@ class AppExceptionListener
             if($this->container->getParameter('camel_case_to_underscore_response') === true) {
                 $keys = array_keys($errors);
                 $keys = array_map(function ($key) {
-                    return from_camel_case($key);
+                    return $key ? from_camel_case($key) : "*";
                 }, $keys);
                 $errors = array_combine($keys, array_values($errors));
             }
