@@ -19,4 +19,4 @@ AppBundle\Entity\User:
             groups: ['list']
 
         role:
-            groups: ['list']
+            groups: ['role_admin']

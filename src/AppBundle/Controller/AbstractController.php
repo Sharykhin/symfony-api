@@ -27,6 +27,8 @@ abstract class AbstractController extends Controller
         array $meta = null
     ) : JsonResponse
     {
+
+        $context = $this->extendContext($context);
         return $this->json(['success' => true, 'data' => $data, 'errors' => null, 'meta' => $meta], $status, $headers, $context);
     }
 
@@ -44,6 +46,7 @@ abstract class AbstractController extends Controller
         array $context = []
     ) : JsonResponse
     {
+        $context = $this->extendContext($context);
         return $this->json(['success' => true, 'data' => null, 'errors' => $errors, 'meta' => null], $status, $headers, $context);
     }
 
@@ -54,5 +57,18 @@ abstract class AbstractController extends Controller
     public function notFound(string $error = 'resource was not fount') : JsonResponse
     {
         return $this->json(['success' => true, 'data' => null, 'errors' => $error, 'meta' => null], JsonResponse::HTTP_NOT_FOUND, [], []);
+    }
+
+    /**
+     * @param array $context
+     * @return array
+     */
+    private function extendContext(array $context) : array
+    {
+        if ($this->isGranted('ROLE_ADMIN', $this->getUser())) {
+            array_push($context['groups'], 'role_admin');
+        }
+
+        return $context;
     }
 }

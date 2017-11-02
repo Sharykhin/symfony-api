@@ -79,6 +79,9 @@ class UserVoter implements VoterInterface
      */
     private function read(IAdvancedUser $user, IId $subject) : int
     {
+        if (in_array('ROLE_ADMIN', $user->getRoles()) || in_array('ROLE_SUPER_ADMIN', $user->getRoles())) {
+            return VoterInterface::ACCESS_GRANTED;
+        }
         return $subject->getId() === $user->getId() ? VoterInterface::ACCESS_GRANTED : VoterInterface::ACCESS_DENIED;
     }
 
@@ -90,7 +93,7 @@ class UserVoter implements VoterInterface
     private function update(IAdvancedUser $user, IAdvancedUser $subject) : int
     {
         if (in_array('ROLE_ADMIN', $user->getRoles()) && !in_array('ROLE_ADMIN', $subject->getRoles())) {
-            return true;
+            return VoterInterface::ACCESS_GRANTED;
         }
 
         return $subject->getId() === $user->getId() ? VoterInterface::ACCESS_GRANTED : VoterInterface::ACCESS_DENIED;

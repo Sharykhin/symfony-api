@@ -100,7 +100,7 @@ class UserController extends AbstractController
      * @param Request $request
      * @return JsonResponse
      *
-     * @Route("/api/users/{userId}", name="get_user")
+     * @Route("/api/users/{userId}", name="put_user")
      * @Method("PUT")
      * @Security("has_role('ROLE_USER')")
      */
