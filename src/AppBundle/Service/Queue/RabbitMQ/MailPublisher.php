@@ -14,7 +14,7 @@ class MailPublisher implements IMailPublisher
     const CHANNEL_NAME = 'mail';
 
     /** @var \PhpAmqpLib\Channel\AMQPChannel $channel */
-    protected $channel;
+    protected $channel = null;
 
     /** @var null|\PhpAmqpLib\Connection\AMQPStreamConnection $connection */
     protected $connection;
@@ -27,14 +27,11 @@ class MailPublisher implements IMailPublisher
         StreamConnection $connection
     )
     {
-        try {
-            $this->connection = $connection->getConnection();
+        $this->connection = $connection->getConnection();
+        if (!is_null($this->connection)) {
             $this->channel = $this->connection->channel();
             $this->channel->queue_declare(self::CHANNEL_NAME, false, false, false, false);
-        } catch (\Exception $exception) {
-            die('hohoho');
         }
-
     }
 
     /**
@@ -43,6 +40,11 @@ class MailPublisher implements IMailPublisher
      */
     public function publish(string $mail, array $payload = []) : void
     {
+        if (is_null($this->channel)) {
+            // log to a file what should be done.
+            return;
+        }
+
         $msg = new AMQPMessage(json_encode([
             'mail' => $mail,
             'payload' => $payload

@@ -12,8 +12,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class StreamConnection
 {
 
-    /** @var AMQPStreamConnection $connection */
-    protected $connection;
+    /** @var null|AMQPStreamConnection $connection */
+    protected $connection = null;
 
     /**
      * StreamConnection constructor.
@@ -31,7 +31,7 @@ class StreamConnection
             );
         } catch (\Exception $exception) {
             // Log error
-            throw $exception;
+            //throw $exception;
         }
 
     }
@@ -39,7 +39,7 @@ class StreamConnection
     /**
      * @return null|AMQPStreamConnection
      */
-    public function getConnection() : AMQPStreamConnection
+    public function getConnection() : ?AMQPStreamConnection
     {
         return $this->connection;
     }
