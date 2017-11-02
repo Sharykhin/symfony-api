@@ -1,6 +1,7 @@
 <?php
 
 namespace AppBundle\FilterRequest;
+
 use AppBundle\Entity\User;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
@@ -61,6 +62,7 @@ class UserRequest extends AbstractRequest
 
     /**
      * @param string|null $role
+     * TODO: this whether it's a good way to delegate role check to request service?
      */
     protected function validateRole(string $role = null) : void
     {

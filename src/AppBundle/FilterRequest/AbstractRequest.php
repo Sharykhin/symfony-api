@@ -44,5 +44,9 @@ abstract class AbstractRequest extends BaseRequest
         return $filtered;
     }
 
+    /**
+     * @param string $action
+     * @return bool
+     */
     abstract protected function isSupport(string $action) : bool;
 }

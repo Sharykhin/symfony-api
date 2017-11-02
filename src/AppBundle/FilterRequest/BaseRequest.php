@@ -2,6 +2,7 @@
 
 namespace AppBundle\FilterRequest;
 
+use AppBundle\Entity\User;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
@@ -54,8 +55,9 @@ class BaseRequest
     /**
      * @return mixed
      */
-    protected function getUser()
+    protected function getUser() : ?User
     {
-        return $this->tokenStorage->getToken()->getUser();
+        $user = $this->tokenStorage->getToken()->getUser();
+        return $user instanceof User ? $user : null;
     }
 }
