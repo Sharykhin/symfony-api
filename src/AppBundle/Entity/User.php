@@ -92,8 +92,11 @@ class User implements IAdvancedUser
     /**
      * @return string
      */
-    public function getFullName() : string
+    public function getFullName() : ?string
     {
+        if (is_null($this->firstName) && is_null($this->lastName)) {
+            return null;
+        }
         return "{$this->firstName} {$this->lastName}";
     }
 

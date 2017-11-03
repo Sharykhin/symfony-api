@@ -51,6 +51,20 @@ class UserConstraints implements IUserConstraints
                         'min' => 8,
                         'groups' => ['registration']
                     ])
+                ],
+                'email' => [
+                    new Assert\NotBlank([
+                        'groups' => ['login', 'registration']
+                    ]),
+                    new Assert\Email([
+                        'groups' => ['update']
+                    ])
+                ],
+                'role' => [
+                    new Assert\Choice([
+                        'choices' => ['ROLE_USER', 'ROLE_ADMIN'],
+                        'groups' => ['update']
+                    ])
                 ]
             ],
             'allowMissingFields' => true

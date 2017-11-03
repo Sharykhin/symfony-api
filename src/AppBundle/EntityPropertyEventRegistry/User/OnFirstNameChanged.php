@@ -32,7 +32,7 @@ class OnFirstNameChanged
      * @param string $oldValue
      * @param string $newValue
      */
-    public function execute(User $user, string $oldValue, string $newValue) : void
+    public function execute(User $user, ?string $oldValue, ?string $newValue) : void
     {
         $this->mailPublisher->publish(self::FIRST_NAME_CHANGED_TYPE, [
             'email' => 'chapal@inbox.ru',

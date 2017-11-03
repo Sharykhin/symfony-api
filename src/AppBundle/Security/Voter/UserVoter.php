@@ -59,10 +59,6 @@ class UserVoter implements VoterInterface
             return VoterInterface::ACCESS_DENIED;
         }
 
-        if (in_array('ROLE_SUPER_ADMIN', $subject->getRoles())) {
-            return VoterInterface::ACCESS_DENIED;
-        }
-
         if (in_array('ROLE_SUPER_ADMIN', $user->getRoles())) {
             return VoterInterface::ACCESS_GRANTED;
         }

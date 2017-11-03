@@ -2,9 +2,6 @@
 
 namespace AppBundle\FilterRequest;
 
-use AppBundle\Entity\User;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
-
 /**
  * Class UserRequest
  * @package AppBundle\FilterRequest
@@ -46,7 +43,6 @@ class UserRequest extends AbstractRequest
      */
     protected function create(array $filtered) : array
     {
-        $this->validateRole($filtered['role'] ?? null);
         return $filtered;
     }
 
@@ -56,22 +52,6 @@ class UserRequest extends AbstractRequest
      */
     protected function update(array $filtered) : array
     {
-        $this->validateRole($filtered['role'] ?? null);
         return $filtered;
-    }
-
-    /**
-     * @param string|null $role
-     * TODO: this whether it's a good way to delegate role check to request service?
-     */
-    protected function validateRole(string $role = null) : void
-    {
-        if (!is_null($role) && in_array($role, ['ROLE_ADMIN', 'ROLE_SUPER_ADMIN'])) {
-            /** @var User $user */
-            $user = $this->getUser();
-            if ($user->getRole() === 'ROLE_ADMIN') {
-                throw new AccessDeniedHttpException('It is forbidden to set the upper role.');
-            }
-        }
     }
 }

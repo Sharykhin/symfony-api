@@ -6,6 +6,8 @@ use AppBundle\Entity\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\FormBuilderInterface;
 
@@ -41,6 +43,13 @@ class UserType extends AbstractType
                 'property_path' => 'role'
             ])
         ;
+
+        $builder->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event) {
+            if ($event->getForm()->getConfig()->getMethod() === 'PUT') {
+                $form = $event->getForm();
+                $form->remove('password');
+            }
+        });
     }
 
     /**

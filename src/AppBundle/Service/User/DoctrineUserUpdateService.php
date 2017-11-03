@@ -13,10 +13,10 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
- * Class DefaultUserUpdateService
+ * Class DoctrineUserUpdateService
  * @package AppBundle\Service\User
  */
-class DefaultUserUpdateService implements IUserUpdate
+class DoctrineUserUpdateService implements IUserUpdate
 {
     /** @var EntityManagerInterface $em */
     protected $em;
@@ -34,7 +34,7 @@ class DefaultUserUpdateService implements IUserUpdate
     protected $validator;
 
     /**
-     * DefaultUserUpdateService constructor.
+     * DoctrineUserUpdateService constructor.
      * @param EntityManagerInterface $em
      * @param FormFactoryInterface $formFactory
      * @param IPropertyRegistryDispatcher $propertyRegistryDispatcher
@@ -70,7 +70,9 @@ class DefaultUserUpdateService implements IUserUpdate
         }
 
         // Map array of values to the user entity
-        $this->formFactory->create(UserType::class, $user)->submit($parameters, false);
+        $this->formFactory->create(UserType::class, $user, [
+            'method' => 'PUT'
+        ])->submit($parameters);
 
         $uow = $this->em->getUnitOfWork();
         $uow->computeChangeSets();
