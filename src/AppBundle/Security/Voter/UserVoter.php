@@ -17,6 +17,7 @@ class UserVoter implements VoterInterface
 {
     const READ = 'read';
     const UPDATE = 'update';
+    const DELETE = 'delete';
 
     /**
      * @param $attribute
@@ -24,7 +25,7 @@ class UserVoter implements VoterInterface
      */
     public function supportsAttribute($attribute) : bool
     {
-        return in_array($attribute, [self::READ, self::UPDATE]);
+        return in_array($attribute, [self::READ, self::UPDATE, self::DELETE]);
     }
 
     /**
@@ -58,8 +59,12 @@ class UserVoter implements VoterInterface
             return VoterInterface::ACCESS_DENIED;
         }
 
+        if (in_array('ROLE_SUPER_ADMIN', $subject->getRoles())) {
+            return VoterInterface::ACCESS_DENIED;
+        }
+
         if (in_array('ROLE_SUPER_ADMIN', $user->getRoles())) {
-            return true;
+            return VoterInterface::ACCESS_GRANTED;
         }
 
         switch($attribute) {
@@ -67,6 +72,8 @@ class UserVoter implements VoterInterface
                 return $this->read($user, $subject);
             case self::UPDATE:
                 return $this->update($user, $subject);
+            case self::DELETE:
+                return $this->delete($user, $subject);
         }
 
         return VoterInterface::ACCESS_DENIED;
@@ -91,6 +98,20 @@ class UserVoter implements VoterInterface
      * @return int
      */
     private function update(IAdvancedUser $user, IAdvancedUser $subject) : int
+    {
+        if (in_array('ROLE_ADMIN', $user->getRoles()) && !in_array('ROLE_ADMIN', $subject->getRoles())) {
+            return VoterInterface::ACCESS_GRANTED;
+        }
+
+        return $subject->getId() === $user->getId() ? VoterInterface::ACCESS_GRANTED : VoterInterface::ACCESS_DENIED;
+    }
+
+    /**
+     * @param IAdvancedUser $user
+     * @param IAdvancedUser $subject
+     * @return int
+     */
+    private function delete(IAdvancedUser $user, IAdvancedUser $subject) : int
     {
         if (in_array('ROLE_ADMIN', $user->getRoles()) && !in_array('ROLE_ADMIN', $subject->getRoles())) {
             return VoterInterface::ACCESS_GRANTED;

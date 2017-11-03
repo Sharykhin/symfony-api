@@ -4,6 +4,8 @@ namespace AppBundle\Service\Queue\RabbitMQ;
 
 use AppBundle\Contract\Queue\IMailPublisher;
 use PhpAmqpLib\Message\AMQPMessage;
+use Psr\Log\LoggerInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Class MailPublisher
@@ -19,15 +21,21 @@ class MailPublisher implements IMailPublisher
     /** @var null|\PhpAmqpLib\Connection\AMQPStreamConnection $connection */
     protected $connection;
 
+    /** @var ContainerInterface $container */
+    protected $container;
+
     /**
      * MailPublisher constructor.
      * @param StreamConnection $connection
+     * @param ContainerInterface $container
      */
     public function __construct(
-        StreamConnection $connection
+        StreamConnection $connection,
+        ContainerInterface $container
     )
     {
         $this->connection = $connection->getConnection();
+        $this->container = $container;
         if (!is_null($this->connection)) {
             $this->channel = $this->connection->channel();
             $this->channel->queue_declare(self::CHANNEL_NAME, false, false, false, false);
@@ -41,7 +49,12 @@ class MailPublisher implements IMailPublisher
     public function publish(string $mail, array $payload = []) : void
     {
         if (is_null($this->channel)) {
-            // log to a file what should be done.
+            /** @var LoggerInterface $logger */
+            $logger = $this->container->get('monolog.logger.queue');
+            $logger->error('Failed publish', [
+                'mail' => $mail,
+                'payload' => $payload
+            ]);
             return;
         }
 

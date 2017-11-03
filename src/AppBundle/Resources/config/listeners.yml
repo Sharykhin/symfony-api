@@ -20,3 +20,7 @@ services:
         arguments: ['@serializer', '@service_container']
         tags:
             - { name: kernel.event_listener, event: kernel.exception, method: onKernelException }
+
+    AppBundle\EventListener\User\UserRemoveListener:
+        tags:
+          - { name: kernel.event_listener, event: user.removed, method: onUserRemoved }

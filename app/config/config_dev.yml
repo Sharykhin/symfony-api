@@ -15,7 +15,7 @@ services:
     Monolog\Formatter\JsonFormatter: ~
 
 monolog:
-    channels: ['foo']
+    channels: ['foo', 'queue']
     handlers:
         main:
             type:  rotating_file
@@ -36,6 +36,12 @@ monolog:
             type: stream
             path: '%kernel.logs_dir%/foo.log'
             channels: [foo]
+            formatter: Monolog\Formatter\JsonFormatter
+        queue:
+            level: error
+            type: stream
+            path: '%kernel.logs_dir%/failed_queue.log'
+            channels: [queue]
             formatter: Monolog\Formatter\JsonFormatter
 #        mail:
 #            type: fingers_crossed
