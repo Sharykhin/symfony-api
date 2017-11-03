@@ -5,7 +5,9 @@ namespace AppBundle\Controller;
 use AppBundle\Contract\Service\Auth\IUserAuthenticate;
 use AppBundle\Contract\Service\Token\IJWTManager;
 use AppBundle\Contract\Service\User\IUserCreate;
+use AppBundle\Event\User\UserRegisteredEvent;
 use AppBundle\FilterRequest\UserRequest;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -49,13 +51,17 @@ class AuthController extends AbstractController
     public function registerAction(
         Request $request,
         IUserCreate $userCreate,
-        UserRequest $userRequest
+        UserRequest $userRequest,
+        EventDispatcherInterface $dispatcher
     ) : JsonResponse
     {
 
         $parameters = $userRequest->filterRequest($request->request->all(), UserRequest::REGISTER_ACTION);
 
         $user = $userCreate->execute($parameters);
+
+        $event = new UserRegisteredEvent($user);
+        $dispatcher->dispatch(UserRegisteredEvent::NAME, $event);
 
         return $this->success([
             'success' => true,

@@ -24,3 +24,7 @@ services:
     AppBundle\EventListener\User\UserRemoveListener:
         tags:
           - { name: kernel.event_listener, event: user.removed, method: onUserRemoved }
+
+    AppBundle\EventListener\User\UserRegisterListener:
+        tags:
+          - { name: kernel.event_listener, event: user.registered, method: onUserRegistered }
